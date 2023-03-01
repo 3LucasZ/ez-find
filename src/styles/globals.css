@@ -105,3 +105,13 @@ a {
     color-scheme: dark;
   }
 }
+
+.add-item-form {
+  flex-direction: row;
+  margin: auto;
+  padding: 10px;
+  width: 400px;
+  justify-items: center;
+  text-align: center;
+
+}
