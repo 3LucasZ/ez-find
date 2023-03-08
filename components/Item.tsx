@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { StorageUnitProps } from "./StorageUnit";
 
 export type ItemProps = {
@@ -7,7 +8,7 @@ export type ItemProps = {
 };
 
 const Item: React.FC<{ item: ItemProps }> = ({ item }) => {
-  return <p>{item.name}</p>;
+  return <Box bg="blue.200">{item.name}</Box>;
 };
 
 export default Item;
