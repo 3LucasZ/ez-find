@@ -13,12 +13,11 @@ datasource db {
 model Item {
   id  Int @id @default(autoincrement())
   name String @db.VarChar(255) @unique
-  itemID Int
-  locations StorageUnit @relation(fields: [itemID], references: [id]) 
+  locations String[] 
 }
 
 model StorageUnit {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255) @unique
-  items Item[]
+  items String[]
 }
