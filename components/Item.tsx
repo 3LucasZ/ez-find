@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Link } from "@chakra-ui/react";
 import { StorageUnitProps } from "./StorageUnit";
 
 export type ItemProps = {
@@ -8,7 +8,7 @@ export type ItemProps = {
 };
 
 const Item: React.FC<{ item: ItemProps }> = ({ item }) => {
-  return <Box bg="blue.200">{item.name}</Box>;
+  return <Link href={"view-item/"+item.name}><Box bg="blue.200">{item.name}</Box></Link>;
 };
 
 export default Item;
