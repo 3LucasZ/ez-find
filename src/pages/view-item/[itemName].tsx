@@ -1,29 +1,31 @@
-import { Stack } from "@chakra-ui/react";
+import { Center, Heading, Stack } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Item, { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
 
-type Props = {
-  items: ItemProps[];
-};
-
-const Items: React.FC<Props> = (props) => {
-  return (
-    <div>props.items.name</div>
-  );
-};
-
 const prisma = new PrismaClient();
-
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const item = await prisma.item.findUnique({
     where: {
-        name: params.itemName
-    }
+      name: String(params?.itemName),
+    },
   });
   return {
-    props: { item },
+    props: item,
   };
 };
 
-export default Items;
+const ItemPage: React.FC<ItemProps> = (props) => {
+  return (
+    <div>
+      <Stack>
+        <Center>
+          <Heading as="h1" size="4xl">
+            {props.name}
+          </Heading>
+        </Center>
+      </Stack>
+    </div>
+  );
+};
+export default ItemPage;
