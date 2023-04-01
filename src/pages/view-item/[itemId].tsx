@@ -24,8 +24,8 @@ const ItemPage: React.FC<ItemProps> = (props) => {
             {props.name}
           </Heading>
         </Center>
-        {props.storagesOnItems.map((location) => (
-          <div>{location.name}</div>
+        {props.storagesOnItems.map((connection) => (
+          <div>{connection.storage.name}</div>
         ))}
       </Stack>
     </div>
