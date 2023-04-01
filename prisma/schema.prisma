@@ -13,21 +13,19 @@ datasource db {
 model Item {
   id              Int               @id @default(autoincrement())
   name            String            @unique @db.VarChar(255)
-  locations       String[]
   StoragesOnItems StoragesOnItems[]
 }
 
-model StorageUnit {
+model Storage {
   id              Int               @id @default(autoincrement())
   name            String            @unique @db.VarChar(255)
-  items           String[]
   StoragesOnItems StoragesOnItems[]
 }
 
 model StoragesOnItems {
   item       Item        @relation(fields: [itemId], references: [id])
   itemId     Int
-  storage    StorageUnit @relation(fields: [storageId], references: [id])
+  storage    Storage @relation(fields: [storageId], references: [id])
   storageId  Int
   assignedAt DateTime    @default(now())
 
