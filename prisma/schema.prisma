@@ -11,13 +11,25 @@ datasource db {
 }
 
 model Item {
-  id  Int @id @default(autoincrement())
-  name String @db.VarChar(255) @unique
-  locations String[] 
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(255)
+  locations       String[]
+  StoragesOnItems StoragesOnItems[]
 }
 
 model StorageUnit {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255) @unique
-  items String[]
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(255)
+  items           String[]
+  StoragesOnItems StoragesOnItems[]
+}
+
+model StoragesOnItems {
+  item       Item        @relation(fields: [itemId], references: [id])
+  itemId     Int
+  storage    StorageUnit @relation(fields: [storageId], references: [id])
+  storageId  Int
+  assignedAt DateTime    @default(now())
+
+  @@id([itemId, storageId])
 }
