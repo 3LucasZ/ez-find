@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const item = await prisma.item.findUnique({
     where: {
-      name: String(params?.itemName),
+      id: String(params?.itemId),
     },
   });
   return {
@@ -16,19 +16,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const ItemPage: React.FC<ItemProps> = (props) => {
+  var storagesUI = <div>No storages were attached to this item</div>;
+  if (props.storages != null) {
+    <Stack>
+      storagesUI ={" "}
+      {props.storages.map((storage) => (
+        <div>{storage.name}</div>
+      ))}
+    </Stack>;
+  }
   return (
-    <div>
-      <Stack>
-        <Center>
-          <Heading as="h1" size="4xl">
-            {props.name}
-          </Heading>
-        </Center>
-        {props.storagesOnItems.map((connection) => (
-          <div>{connection.storage.name}</div>
-        ))}
-      </Stack>
-    </div>
+    <Stack>
+      <Center>
+        <Heading as="h1" size="4xl">
+          {props.name}
+        </Heading>
+      </Center>
+      <Center>{storagesUI}</Center>
+    </Stack>
   );
 };
 export default ItemPage;

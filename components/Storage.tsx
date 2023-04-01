@@ -1,13 +1,13 @@
-import { StorageUnitProps } from "./StorageUnit";
+import { ItemProps } from "./Item";
 
 export type StorageProps = {
   id: number;
   name: string;
-  items: string[];
+  items: ItemProps[];
 };
 
-const Item: React.FC<{ item: StorageProps }> = ({ item }) => {
-  return <p>{item.name}</p>;
+const Storage: React.FC<{ storage: StorageProps }> = ({ storage }) => {
+  return <p>{storage.name}</p>;
 };
 
-export default Item;
+export default Storage;

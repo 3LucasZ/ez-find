@@ -1,16 +1,15 @@
 import { Box, Link } from "@chakra-ui/react";
-import { StoragesOnItemsProps } from "./StoragesOnItems";
-import { StorageUnitProps } from "./StorageUnit";
+import { StorageProps } from "./Storage";
 
 export type ItemProps = {
-  id: number;
+  id: string;
   name: string;
-  storagesOnItems: StoragesOnItemsProps[];
+  storages: StorageProps[];
 };
 
 const Item: React.FC<{ item: ItemProps }> = ({ item }) => {
   return (
-    <Link href={"view-item/" + item.name}>
+    <Link href={"view-item/" + item.id}>
       <Box bg="blue.200">{item.name}</Box>
     </Link>
   );
