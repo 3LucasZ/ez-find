@@ -50,7 +50,7 @@ export default function Home() {
               color={"teal.200"}
             ></RouteButton>
             <RouteButton
-              route={"add-item"}
+              route={"add-storage"}
               text={"add storage"}
               imageUrl={"images/add-item.png"}
               color={"orange.200"}
