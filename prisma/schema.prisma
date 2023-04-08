@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Item {
-  id       String    @id @default(cuid())
+  id       Int    @id @default(autoincrement())
   name     String    @unique @db.VarChar(255)
   storages Storage[]
 }
 
 model Storage {
-  id    String @id @default(cuid())
+  id    Int @id @default(autoincrement())
   name  String @unique @db.VarChar(255)
   items Item[]
 }

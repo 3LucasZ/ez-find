@@ -2,9 +2,9 @@ import { Box, Link } from "@chakra-ui/react";
 import { StorageProps } from "./Storage";
 
 export type ItemProps = {
-  id: string;
+  id: number;
   name: string;
-  storages: StorageProps[];
+  storages: { storages: StorageProps[] };
 };
 
 const Item: React.FC<{ item: ItemProps }> = ({ item }) => {
