@@ -1,13 +1,27 @@
-import { Center, Heading, Stack } from "@chakra-ui/react";
+import {
+  Center,
+  Flex,
+  Heading,
+  List,
+  ListIcon,
+  ListItem,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
 import Item, { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
+import Header from "components/Header";
 
 const prisma = new PrismaClient();
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const item = await prisma.item.findUnique({
     where: {
-      id: params?.itemId,
+      id: Number(params?.itemId),
+    },
+    include: {
+      storages: true,
     },
   });
   return {
@@ -16,28 +30,34 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const ItemPage: React.FC<ItemProps> = (props) => {
-  var storagesUI = <div>No storages were attached to this item</div>;
+  var storagesUI = <Text>No storages are attached to this item</Text>;
   console.log(props);
-  console.log("Storages:"+props.storages);
-  if (props.storages != null) {
-    console.log("Storages are NOT null");
-    storagesUI = <Stack>
-      {props.storages.map((storage) => (
-        <div>{storage.name}</div>
-      ))}
-    </Stack>;
+  if (props.storages.length > 0) {
+    storagesUI = (
+      <Stack>
+        <Text>You can find this item at:</Text>
+        <List spacing={3}>
+          {props.storages.map((storage) => (
+            <ListItem>
+              <ListIcon as={CheckCircleIcon} color="green.500" />
+              {storage.name}
+            </ListItem>
+          ))}
+        </List>
+      </Stack>
+    );
   } else {
-    console.log("Storages are null")
+    console.log("Storages are null");
   }
   return (
     <Stack>
+      <Header />
       <Center>
-        <Heading as="h1" size="4xl">
-          {props.name}
-        </Heading>
+        <Heading>{props.name}</Heading>
       </Center>
       <Center>{storagesUI}</Center>
     </Stack>
   );
 };
+
 export default ItemPage;

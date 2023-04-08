@@ -3,9 +3,10 @@ import Router from "next/router";
 
 import { Select } from "chakra-react-select";
 
-import { FormControl, Input, Button, Box } from "@chakra-ui/react";
+import { FormControl, Input, Button, Box, Stack } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { StorageProps } from "components/Storage";
+import Header from "components/Header";
 
 enum FormState {
   Input,
@@ -55,39 +56,43 @@ const ItemDraft: React.FC<StorageProps[]> = (props) => {
   // }
 
   return (
-    <Box h="calc(100vh)">
-      <div className="add-item-form">
-        <form onSubmit={submitData}>
-          <FormControl>
-            <Input
-              variant="filled"
-              marginTop={10}
-              placeholder="Item name"
-              isDisabled={formState === FormState.Input ? false : true}
-              onChange={(e) => setName(e.target.value)}
-            ></Input>
-            <Select
-              isMulti
-              name="storages"
-              options={options}
-              placeholder="Select storages"
-              closeMenuOnSelect={false}
-              onChange={(e) => setStorageIds(Array.from(e.values))}
-              size="lg"
-            />
-            <Button
-              mt={4}
-              size="lg"
-              colorScheme="teal"
-              type="submit"
-              isLoading={formState == FormState.Input ? false : true}
-            >
-              Submit Item
-            </Button>
-          </FormControl>
-        </form>
-      </div>
-    </Box>
+    <Stack>
+      <Header />
+
+      <Box h="calc(100vh)">
+        <div className="add-item-form">
+          <form onSubmit={submitData}>
+            <FormControl>
+              <Input
+                variant="filled"
+                marginTop={10}
+                placeholder="Item name"
+                isDisabled={formState === FormState.Input ? false : true}
+                onChange={(e) => setName(e.target.value)}
+              ></Input>
+              <Select
+                isMulti
+                name="storages"
+                options={options}
+                placeholder="Select storages"
+                closeMenuOnSelect={false}
+                onChange={(e) => setStorageIds(Array.from(e.values))}
+                size="lg"
+              />
+              <Button
+                mt={4}
+                size="lg"
+                colorScheme="teal"
+                type="submit"
+                isLoading={formState == FormState.Input ? false : true}
+              >
+                Submit Item
+              </Button>
+            </FormControl>
+          </form>
+        </div>
+      </Box>
+    </Stack>
   );
 };
 

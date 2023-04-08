@@ -6,8 +6,8 @@ export type StorageProps = {
   items: ItemProps[];
 };
 
-const Storage: React.FC<{ storage: StorageProps }> = ({ storage }) => {
+const StorageWidget: React.FC<{ storage: StorageProps }> = ({ storage }) => {
   return <p>{storage.name}</p>;
 };
 
-export default Storage;
+export default StorageWidget;

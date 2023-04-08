@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
+import Header from "components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,15 +28,7 @@ export default function Home() {
       </Head>
       <main>
         <Stack>
-          <Box h="2vh"></Box>
-          <Center>
-            <Heading as="h1" size="4xl">
-              EZ-Find
-            </Heading>
-          </Center>
-          <Box h="5vh"></Box>
-          <Divider />
-          <Box h="5vh"></Box>
+          <Header />
           <SimpleGrid columns={2} spacing={10}>
             <RouteButton
               route={"add-item"}
