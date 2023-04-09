@@ -75,16 +75,16 @@ const ItemPage: React.FC<Props> = (props) => {
       <Center>
         <Flex>
           <Heading>{item.name}</Heading>
-          <Link href={"/upsert-item?id=" + item.id}>
-            <IconButton
-              ml={2}
-              mr={2}
-              colorScheme="teal"
-              aria-label="edit"
-              icon={<EditIcon />}
-            />
-          </Link>
-
+          <IconButton
+            ml={2}
+            mr={2}
+            colorScheme="teal"
+            aria-label="edit"
+            icon={<EditIcon />}
+            onClick={() =>
+              Router.push({ pathname: "/upsert-item", query: { id: item.id } })
+            }
+          />
           <ConfirmDeleteModal
             name={" the item: " + item.name}
             handleDelete={handleDelete}

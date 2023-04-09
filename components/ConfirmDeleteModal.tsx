@@ -35,7 +35,7 @@ export default function ConfirmDeleteModal(props: PageProps) {
         <ModalContent>
           <ModalHeader>Confirm Delete</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Are you sure you want to delete {props.name} ?</ModalBody>
+          <ModalBody>Are you sure you want to delete {props.name}?</ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="teal">
               No

@@ -1,20 +1,23 @@
 import {
   Center,
+  Flex,
   Heading,
+  IconButton,
   List,
   ListIcon,
   ListItem,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { CheckCircleIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, EditIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Header from "components/Header";
 import { StorageProps } from "components/Storage";
 import { useQRCode } from "next-qrcode";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import ItemWidget from "components/Item";
+import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 
 type Props = {
   storage: StorageProps;
@@ -22,11 +25,24 @@ type Props = {
 };
 const StoragePage: React.FC<Props> = (props) => {
   const storage = props.storage;
-  console.log(storage);
+  console.log("Storage", storage);
   const link = "http://" + props.host + useRouter().asPath;
-  console.log(link);
+  console.log("Link", link);
   const { Image } = useQRCode();
-
+  const handleDelete = async () => {
+    try {
+      const body = { id: storage.id };
+      console.log(body);
+      const res = await fetch("/api/delete-storage", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      await Router.push({ pathname: "/view-storages" });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   let itemsUI = <Text>No items are attached to this storage</Text>;
   if (storage.items.length > 0) {
     itemsUI = (
@@ -47,7 +63,26 @@ const StoragePage: React.FC<Props> = (props) => {
     <Stack>
       <Header />
       <Center>
-        <Heading>{storage.name}</Heading>
+        <Flex>
+          <Heading>{storage.name}</Heading>
+          <IconButton
+            ml={2}
+            mr={2}
+            colorScheme="teal"
+            aria-label="edit"
+            icon={<EditIcon />}
+            onClick={() =>
+              Router.push({
+                pathname: "/upsert-storage",
+                query: { id: storage.id },
+              })
+            }
+          />
+          <ConfirmDeleteModal
+            name={" the storage: " + storage.name}
+            handleDelete={handleDelete}
+          />
+        </Flex>
       </Center>
       <Center>{itemsUI}</Center>
       <Center>
