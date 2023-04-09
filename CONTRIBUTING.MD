@@ -1,3 +1,5 @@
+# Contributing
+
 Set up (One time):
 
 1. clone repo
@@ -19,14 +21,6 @@ Debug:
 1. npx prisma studio (view db)
 2. delete migrate folder then run: npx prisma migrate dev --name init (recreate db)
 
-Unit Tests:
-/_ Use to unit test form states _/
-// const simulateSubmissionData = async (e: React.SyntheticEvent) => {
-// console.log("Hello");
-// e.preventDefault();
-// setFormState(FormState.Submitting);
-// setTimeout(() => {
-// console.log("Sending");
-// setFormState(FormState.Input);
-// }, 3000);
-// }
+Deploying (Docker):
+
+1. Work in Progress
