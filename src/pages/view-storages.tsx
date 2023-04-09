@@ -17,7 +17,7 @@ type StateProps = {
 const Storages: React.FC<PageProps> = (props) => {
   const [state, setState] = useState<StateProps>({
     query: "",
-    list: [],
+    list: props.storages,
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const res = props.storages.filter((storage) => {
