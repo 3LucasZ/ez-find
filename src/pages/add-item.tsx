@@ -14,8 +14,13 @@ enum FormState {
   Error,
   Success,
 }
-
-const ItemDraft: React.FC<StorageProps[]> = (props) => {
+type PageProps = {
+  storages: StorageProps[];
+};
+type RelateProps = {
+  id: number;
+};
+const ItemDraft: React.FC<PageProps> = (props) => {
   const options = props.storages.map((storage) => ({
     value: storage.id,
     label: storage.name,
@@ -23,7 +28,7 @@ const ItemDraft: React.FC<StorageProps[]> = (props) => {
 
   const [name, setName] = useState("");
   const [formState, setFormState] = useState(FormState.Input);
-  const [storageIds, setStorageIds] = useState([]);
+  const [storageIds, setStorageIds] = useState<RelateProps[]>([]);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -76,7 +81,12 @@ const ItemDraft: React.FC<StorageProps[]> = (props) => {
                 options={options}
                 placeholder="Select storages"
                 closeMenuOnSelect={false}
-                onChange={(e) => setStorageIds(Array.from(e.values))}
+                onChange={(e) => {
+                  const ids: RelateProps[] = [];
+                  e.map((obj) => ids.push({ id: obj.value }));
+                  console.log(ids);
+                  setStorageIds(ids);
+                }}
                 size="lg"
               />
               <Button
@@ -101,7 +111,7 @@ export async function getServerSideProps() {
   const storages = await prisma.storage.findMany();
   return {
     props: {
-      storages,
+      storages: storages,
     },
   };
 }

@@ -7,11 +7,14 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, locations } = req.body;
+  const { name, storageIds } = req.body;
   const result = await prisma.item.create({
     data: {
       name: name,
-      locations: locations,
+      storages: { connect: storageIds },
+    },
+    include: {
+      storages: true,
     },
   });
   return res.status(200).json(result);
