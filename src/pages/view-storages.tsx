@@ -1,26 +1,36 @@
-import React from "react";
-import { useQRCode } from "next-qrcode";
+import { Box, Stack } from "@chakra-ui/react";
+import { PrismaClient } from "@prisma/client";
+import Header from "components/Header";
+import Item, { ItemProps } from "components/Item";
+import StorageWidget, { StorageProps } from "components/Storage";
+import { GetServerSideProps } from "next";
 
-function QRTest() {
-  const { Canvas } = useQRCode();
+type Props = {
+  storages: StorageProps[];
+};
 
+const Storages: React.FC<Props> = (props) => {
   return (
-    <div>
-      <h1>Welcome to Next.js!</h1>
-      <Canvas
-        text={"google.com"}
-        options={{
-          level: "M",
-          margin: 3,
-          scale: 4,
-          width: 200,
-          color: {
-            dark: "#000000",
-            light: "#FFFFFF",
-          },
-        }}
-      />
-    </div>
+    <Stack>
+      <Header></Header>
+      <Box overflowY="auto" height="50vh" bg={"red.200"}>
+        <Stack>
+          {props.storages.map((storage) => (
+            <StorageWidget storage={storage} />
+          ))}
+        </Stack>
+      </Box>
+    </Stack>
   );
-}
-export default QRTest;
+};
+
+const prisma = new PrismaClient();
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const storages = await prisma.storage.findMany();
+  return {
+    props: { storages },
+  };
+};
+
+export default Storages;

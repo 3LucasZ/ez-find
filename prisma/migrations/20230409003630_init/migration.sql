@@ -1,23 +1,30 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Item" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
 
-  - You are about to drop the `StoragesOnItems` table. If the table is not empty, all the data it contains will be lost.
+    CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
+);
 
-*/
--- DropForeignKey
-ALTER TABLE "StoragesOnItems" DROP CONSTRAINT "StoragesOnItems_itemId_fkey";
+-- CreateTable
+CREATE TABLE "Storage" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
 
--- DropForeignKey
-ALTER TABLE "StoragesOnItems" DROP CONSTRAINT "StoragesOnItems_storageId_fkey";
-
--- DropTable
-DROP TABLE "StoragesOnItems";
+    CONSTRAINT "Storage_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "_ItemToStorage" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Item_name_key" ON "Item"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Storage_name_key" ON "Storage"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ItemToStorage_AB_unique" ON "_ItemToStorage"("A", "B");

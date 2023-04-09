@@ -46,8 +46,6 @@ const ItemPage: React.FC<ItemProps> = (props) => {
         </List>
       </Stack>
     );
-  } else {
-    console.log("Storages are null");
   }
   return (
     <Stack>
