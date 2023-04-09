@@ -1,4 +1,5 @@
 import { Box, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { StorageProps } from "./Storage";
 
 export type ItemProps = {
@@ -9,8 +10,8 @@ export type ItemProps = {
 
 const ItemWidget: React.FC<{ item: ItemProps }> = ({ item }) => {
   return (
-    <Link href={"view-item/" + item.id}>
-      <Box bg="blue.200">{item.name}</Box>
+    <Link as={NextLink} href={"/view-item/" + item.id}>
+      {item.name}
     </Link>
   );
 };
