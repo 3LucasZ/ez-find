@@ -28,6 +28,9 @@ import Item, { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
 import Header from "components/Header";
 import StorageWidget from "components/Storage";
+import ConfirmModal from "components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "components/ConfirmDeleteModal";
+import Router, { withRouter } from "next/router";
 
 type Props = {
   item: ItemProps;
@@ -35,6 +38,20 @@ type Props = {
 
 const ItemPage: React.FC<Props> = (props) => {
   const item = props.item;
+  const handleDelete = async () => {
+    try {
+      const body = { id: item.id };
+      console.log(body);
+      const res = await fetch("/api/delete-item", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      await Router.push({ pathname: "/view-items" });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   let storagesUI = <Text>No storages are attached to this item</Text>;
   console.log(props);
   if (item.storages.length > 0) {
@@ -67,10 +84,10 @@ const ItemPage: React.FC<Props> = (props) => {
               icon={<EditIcon />}
             />
           </Link>
-          <IconButton
-            colorScheme="red"
-            aria-label="delete"
-            icon={<DeleteIcon />}
+
+          <ConfirmDeleteModal
+            name={" the item: " + item.name}
+            handleDelete={handleDelete}
           />
         </Flex>
       </Center>
