@@ -9,9 +9,19 @@ export type ItemProps = {
 };
 
 const ItemWidget: React.FC<{ item: ItemProps }> = ({ item }) => {
+  let hoverState = {
+    bg: "teal.400",
+  };
   return (
-    <Link as={NextLink} href={"/item/" + item.id}>
-      <Box borderRadius="md" bg="teal.300" color="white" px={4} h={8}>
+    <Link href={"/item/" + item.id} style={{ textDecoration: "none" }}>
+      <Box
+        borderRadius="md"
+        bg="teal.300"
+        color="white"
+        px={4}
+        h={8}
+        _hover={hoverState}
+      >
         {item.name}
       </Box>
     </Link>

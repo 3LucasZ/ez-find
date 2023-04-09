@@ -5,7 +5,7 @@ export default function Header() {
     <Stack>
       <Box h="2vh"></Box>
       <Center>
-        <Link href={"/"}>
+        <Link href={"/"} style={{ textDecoration: "none" }}>
           <Heading as="h1" size="4xl" color="teal.500">
             EZ-Find
           </Heading>
