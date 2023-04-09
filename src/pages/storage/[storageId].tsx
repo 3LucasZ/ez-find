@@ -16,23 +16,6 @@ import { useQRCode } from "next-qrcode";
 import { useRouter } from "next/router";
 import ItemWidget from "components/Item";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
-  const storage = await prisma.storage.findUnique({
-    where: {
-      id: Number(context.params?.storageId),
-    },
-    include: {
-      items: true,
-    },
-  });
-  return {
-    props: {
-      storage: storage,
-      host: context.req.headers.host,
-    },
-  };
-};
 type Props = {
   storage: StorageProps;
   host: String;
@@ -89,6 +72,24 @@ const StoragePage: React.FC<Props> = (props) => {
       </Center>
     </Stack>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const prisma = new PrismaClient();
+  const storage = await prisma.storage.findUnique({
+    where: {
+      id: Number(context.params?.storageId),
+    },
+    include: {
+      items: true,
+    },
+  });
+  return {
+    props: {
+      storage: storage,
+      host: context.req.headers.host,
+    },
+  };
 };
 
 export default StoragePage;

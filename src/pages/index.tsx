@@ -31,7 +31,7 @@ export default function Home() {
           <Header />
           <SimpleGrid columns={2} spacing={10}>
             <RouteButton
-              route={"add-item"}
+              route={"upsert-item"}
               text={"add item"}
               imageUrl={"images/add-item.png"}
               color={"red.200"}
@@ -43,7 +43,7 @@ export default function Home() {
               color={"teal.200"}
             ></RouteButton>
             <RouteButton
-              route={"add-storage"}
+              route={"upsert-storage"}
               text={"add storage"}
               imageUrl={"images/add-item.png"}
               color={"orange.200"}
