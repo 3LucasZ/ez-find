@@ -11,7 +11,9 @@ export type ItemProps = {
 const ItemWidget: React.FC<{ item: ItemProps }> = ({ item }) => {
   return (
     <Link as={NextLink} href={"/view-item/" + item.id}>
-      {item.name}
+      <Box borderRadius="md" bg="teal.300" color="white" px={4} h={8}>
+        {item.name}
+      </Box>
     </Link>
   );
 };

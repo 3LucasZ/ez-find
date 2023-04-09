@@ -45,7 +45,6 @@ const ItemPage: React.FC<Props> = (props) => {
         <List spacing={3}>
           {item.storages.map((storage) => (
             <ListItem>
-              <ListIcon as={CheckCircleIcon} color="green.500" />
               <StorageWidget storage={storage} />
             </ListItem>
           ))}

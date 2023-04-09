@@ -9,7 +9,13 @@ export type StorageProps = {
 };
 
 const StorageWidget: React.FC<{ storage: StorageProps }> = ({ storage }) => {
-  return <Link href={"/view-storage/" + storage.id}>{storage.name}</Link>;
+  return (
+    <Link href={"/view-storage/" + storage.id}>
+      <Box borderRadius="md" bg="blue.300" color="white" px={4} h={8}>
+        {storage.name}
+      </Box>
+    </Link>
+  );
 };
 
 export default StorageWidget;

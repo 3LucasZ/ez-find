@@ -52,7 +52,6 @@ const StoragePage: React.FC<Props> = (props) => {
         <List spacing={3}>
           {storage.items.map((item) => (
             <ListItem>
-              <ListIcon as={CheckCircleIcon} color="green.500" />
               <ItemWidget item={item} />
             </ListItem>
           ))}
@@ -82,14 +81,11 @@ const StoragePage: React.FC<Props> = (props) => {
             scale: 4,
             width: 200,
             color: {
-              dark: "#000000FF",
+              dark: "#4FD1C5FF",
               light: "#FFFFFFFF",
             },
           }}
         />
-      </Center>
-      <Center>
-        <Text>Link: {link}</Text>
       </Center>
     </Stack>
   );

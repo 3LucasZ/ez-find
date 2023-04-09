@@ -6,7 +6,7 @@ export default function Header() {
       <Box h="2vh"></Box>
       <Center>
         <Link href={"/"}>
-          <Heading as="h1" size="4xl">
+          <Heading as="h1" size="4xl" color="teal.500">
             EZ-Find
           </Heading>
         </Link>

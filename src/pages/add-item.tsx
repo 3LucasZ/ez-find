@@ -63,7 +63,6 @@ const ItemDraft: React.FC<PageProps> = (props) => {
   return (
     <Stack>
       <Header />
-
       <Box h="calc(100vh)">
         <div className="add-item-form">
           <form onSubmit={submitData}>

@@ -12,7 +12,7 @@ const Items: React.FC<Props> = (props) => {
   return (
     <Stack>
       <Header></Header>
-      <Box overflowY="auto" height="50vh" bg={"red.200"}>
+      <Box overflowY="auto" height="50vh">
         <Stack>
           {props.items.map((item) => (
             <Item item={item} />
