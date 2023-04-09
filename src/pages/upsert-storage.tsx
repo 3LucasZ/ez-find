@@ -117,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
-  const oldStorage = find == null ? { id: -1, storages: [] } : find;
+  const oldStorage = find == null ? { id: -1, name: "", items: [] } : find;
   return {
     props: {
       allItems: allItems,
