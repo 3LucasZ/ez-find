@@ -1,4 +1,5 @@
 import {
+  Button,
   Center,
   Flex,
   Heading,
@@ -19,15 +20,18 @@ import { useQRCode } from "next-qrcode";
 import Router, { useRouter } from "next/router";
 import ItemWidget from "components/Item";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
+import { genXML } from "services/genXML";
 type Props = {
   storage: StorageProps;
-  host: String;
+  link: string;
+  dymo: any;
+  labelXML: string;
+  labelPreview: string;
 };
 const StoragePage: React.FC<Props> = (props) => {
   const storage = props.storage;
   console.log("Storage", storage);
-  const link = "http://" + props.host + useRouter().asPath;
-  console.log("Link", link);
+  console.log("Link", props.link);
   const { Image } = useQRCode();
   const handleDelete = async () => {
     try {
@@ -43,7 +47,7 @@ const StoragePage: React.FC<Props> = (props) => {
       console.error(error);
     }
   };
-  let itemsUI = <Text>No items are attached to this storage</Text>;
+  let itemsUI = <Text>No items are attached to this storage.</Text>;
   if (storage.items.length > 0) {
     itemsUI = (
       <Stack>
@@ -92,7 +96,7 @@ const StoragePage: React.FC<Props> = (props) => {
           </Center>
           <Center>
             <Image
-              text={link}
+              text={props.link}
               options={{
                 type: "image/jpeg",
                 quality: 0.3,
@@ -113,21 +117,16 @@ const StoragePage: React.FC<Props> = (props) => {
             <Heading>Dymo Print:</Heading>
           </Center>
           <Center>
-            <Image
-              text={link}
-              options={{
-                type: "image/jpeg",
-                quality: 0.3,
-                level: "M",
-                margin: 3,
-                scale: 4,
-                width: 200,
-                color: {
-                  dark: "#4FD1C5FF",
-                  light: "#FFFFFFFF",
-                },
+            <img src={"data:image/png;base64," + props.labelPreview} />
+          </Center>
+          <Center>
+            <Button
+              onClick={() => {
+                props.dymo.print("DYMO LabelWriter 450", props.labelXML);
               }}
-            />
+            >
+              Print
+            </Button>
           </Center>
         </div>
       </SimpleGrid>
@@ -145,10 +144,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
+  const link = "http://" + context.req.headers.host + useRouter().asPath;
+  const labelXML: string = genXML(link);
+  const Dymo = require("dymojs"),
+    dymo = new Dymo();
+  const labelPreview: string = await dymo.renderLabel(labelXML);
   return {
     props: {
       storage: storage,
-      host: context.req.headers.host,
+      link: link,
+      labelXML: labelXML,
+      dymo: dymo,
+      labelPreview: labelPreview,
     },
   };
 };
