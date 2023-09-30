@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckCircleIcon, EditIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Header from "components/Header";
 import { StorageProps } from "components/Storage";
 import { useQRCode } from "next-qrcode";
@@ -23,15 +23,12 @@ import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import { genXML } from "services/genXML";
 type Props = {
   storage: StorageProps;
-  link: string;
-  dymo: any;
-  labelXML: string;
-  labelPreview: string;
+  url: string;
+  img: string;
+  xml: string;
 };
 const StoragePage: React.FC<Props> = (props) => {
   const storage = props.storage;
-  console.log("Storage", storage);
-  console.log("Link", props.link);
   const { Image } = useQRCode();
   const handleDelete = async () => {
     try {
@@ -62,6 +59,17 @@ const StoragePage: React.FC<Props> = (props) => {
       </Stack>
     );
   }
+
+  console.log("url", props.url);
+  console.log("storage", storage);
+
+  console.log("img", props.img);
+  const Dymo = require("dymojs"),
+    dymo = new Dymo();
+  //console.log("render", dymo.renderLabel(props.xml));
+  // dymo.renderLabel(props.xml).then((imageData: any) => {
+  //   console.log(imageData);
+  // });
 
   return (
     <Stack>
@@ -96,7 +104,7 @@ const StoragePage: React.FC<Props> = (props) => {
           </Center>
           <Center>
             <Image
-              text={props.link}
+              text={props.url}
               options={{
                 type: "image/jpeg",
                 quality: 0.3,
@@ -117,12 +125,12 @@ const StoragePage: React.FC<Props> = (props) => {
             <Heading>Dymo Print:</Heading>
           </Center>
           <Center>
-            <img src={"data:image/png;base64," + props.labelPreview} />
+            <img src={"data:image/png;base64, " + props.img} />
           </Center>
           <Center>
             <Button
               onClick={() => {
-                props.dymo.print("DYMO LabelWriter 450", props.labelXML);
+                dymo.print("DYMO LabelWriter 450", props.xml);
               }}
             >
               Print
@@ -144,18 +152,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
-  const link: string = "http://github.com";
-  const labelXML: string = genXML(link);
+
+  const domain = context.req.headers.host;
+  const path = context.resolvedUrl;
+  const url = "http://" + domain + path;
+
+  const xml: string = genXML(url);
   const Dymo = require("dymojs"),
     dymo = new Dymo();
-  const labelPreview: string = await dymo.renderLabel(labelXML);
+  var img: string = "AemptyA";
+  await dymo.renderLabel(xml).then((imageData: any) => {
+    img = imageData.slice(1, -1);
+    console.log("img" + " " + img);
+  });
+
   return {
     props: {
       storage: storage,
-      link: link,
-      labelXML: labelXML,
-      dymo: dymo,
-      labelPreview: labelPreview,
+      url: url,
+      img: img,
+      xml: xml,
     },
   };
 };
