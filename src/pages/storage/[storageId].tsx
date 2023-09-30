@@ -144,7 +144,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
-  const link = "http://" + context.req.headers.host + useRouter().asPath;
+  const link: string = "http://github.com";
   const labelXML: string = genXML(link);
   const Dymo = require("dymojs"),
     dymo = new Dymo();
