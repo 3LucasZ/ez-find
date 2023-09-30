@@ -6,6 +6,7 @@ import {
   List,
   ListIcon,
   ListItem,
+  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -18,7 +19,6 @@ import { useQRCode } from "next-qrcode";
 import Router, { useRouter } from "next/router";
 import ItemWidget from "components/Item";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
-
 type Props = {
   storage: StorageProps;
   host: String;
@@ -85,26 +85,52 @@ const StoragePage: React.FC<Props> = (props) => {
         </Flex>
       </Center>
       <Center>{itemsUI}</Center>
-      <Center>
-        <Heading>Printable QR Code:</Heading>
-      </Center>
-      <Center>
-        <Image
-          text={link}
-          options={{
-            type: "image/jpeg",
-            quality: 0.3,
-            level: "M",
-            margin: 3,
-            scale: 4,
-            width: 200,
-            color: {
-              dark: "#4FD1C5FF",
-              light: "#FFFFFFFF",
-            },
-          }}
-        />
-      </Center>
+      <SimpleGrid columns={2} spacing={10}>
+        <div>
+          <Center>
+            <Heading>Manual Print:</Heading>
+          </Center>
+          <Center>
+            <Image
+              text={link}
+              options={{
+                type: "image/jpeg",
+                quality: 0.3,
+                level: "M",
+                margin: 3,
+                scale: 4,
+                width: 200,
+                color: {
+                  dark: "#4FD1C5FF",
+                  light: "#FFFFFFFF",
+                },
+              }}
+            />
+          </Center>
+        </div>
+        <div>
+          <Center>
+            <Heading>Dymo Print:</Heading>
+          </Center>
+          <Center>
+            <Image
+              text={link}
+              options={{
+                type: "image/jpeg",
+                quality: 0.3,
+                level: "M",
+                margin: 3,
+                scale: 4,
+                width: 200,
+                color: {
+                  dark: "#4FD1C5FF",
+                  light: "#FFFFFFFF",
+                },
+              }}
+            />
+          </Center>
+        </div>
+      </SimpleGrid>
     </Stack>
   );
 };

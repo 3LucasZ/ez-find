@@ -16,8 +16,28 @@ import { RouteButton } from "components/RouteButton";
 import Header from "components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
+import { genXML } from "services/genXML";
+import { useEffect } from "react";
 
 export default function Home() {
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+
+  //   script.src = "services/dymo";
+  //   script.async = true;
+
+  //   document.body.appendChild(script);
+
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
+
+  const xml: string = genXML("github.com");
+  const label = dymo.label.framework.openLabelXml(xml);
+  // var pngData = label.render();
+
+  //   labelImage.src = "data:image/png;base64," + pngData;
   return (
     <>
       <Head>
