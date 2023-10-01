@@ -27,13 +27,14 @@ const StoragePage: React.FC<Props> = (props) => {
     props.img == "" ? (
       <Stack>
         <Text fontSize="xl">
-          Sorry, you can not use the DYMO print feature. We could not detect the
-          DYMO Connect service on your device. Please checkout our instructions
+          {
+            "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout our instructions "
+          }
           <Link
             color="teal.500"
             href="https://github.com/3LucasZ/ez-find/blob/main/README.md"
           >
-            our instructions
+            {" our instructions "}
           </Link>
           on how to enable the service. Thank you!
         </Text>
