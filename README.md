@@ -11,3 +11,12 @@ Steps in order to have dymo printing functionality:
 - Connected to ONE printer via USB
 
 4. (Note) There is currently only support for DYMO LabelWriter 450 Printers
+
+# Website
+
+If using EZ Server Deployment, go to: 192.168.1.229:3000/
+
+# Useful Commands
+
+- cancel -a -x # cancel all printer jobs
+- /bin/bash /Applications/DYMO.WebApi.Mac.Host.app/Contents/Resources/InstallCertificates.sh
