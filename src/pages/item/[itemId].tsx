@@ -1,36 +1,21 @@
 import {
-  Button,
   Center,
   Flex,
   Heading,
   IconButton,
-  Link,
   List,
-  ListIcon,
   ListItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalOverlay,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import {
-  CheckCircleIcon,
-  DeleteIcon,
-  EditIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
-import Item, { ItemProps } from "components/Item";
+import { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
 import Header from "components/Header";
 import StorageWidget from "components/Storage";
-import ConfirmModal from "components/ConfirmDeleteModal";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
-import Router, { withRouter } from "next/router";
+import Router from "next/router";
 
 type Props = {
   item: ItemProps;

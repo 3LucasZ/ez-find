@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 
 import { MultiValue, Select } from "chakra-react-select";
 
