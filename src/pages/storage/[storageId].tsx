@@ -155,7 +155,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const domain = context.req.headers.host;
   const path = context.resolvedUrl;
   const url = "http://" + domain + path;
-  const xml: string = genXML(url);
+  const xml: string = genXML(
+    url,
+    storage?.name == null ? "Null" : storage.name
+  );
   const Dymo = require("dymojs"),
     dymo = new Dymo();
   var img: string = "AemptyA";

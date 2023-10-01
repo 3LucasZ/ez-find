@@ -1,4 +1,4 @@
-export function genXML(url: string): string {
+export function genXML(url: string, label: string): string {
   return `<?xml version="1.0" encoding="utf-8"?>
   <DesktopLabel Version="1">
     <DYMOLabel Version="3">
@@ -60,14 +60,14 @@ export function genXML(url: string): string {
             </Margin>
             <BarcodeFormat>QRCode</BarcodeFormat>
             <Data>
-              <DataString>URL:github.com</DataString>
+              <DataString>URL:${url}</DataString>
             </Data>
             <HorizontalAlignment>Center</HorizontalAlignment>
             <VerticalAlignment>Middle</VerticalAlignment>
             <Size>AutoFit</Size>
             <EQRCodeType>QRCodeWebPage</EQRCodeType>
             <WebAddressDataHolder>
-              <DataString>github.com</DataString>
+              <DataString>${url}</DataString>
             </WebAddressDataHolder>
             <ObjectLayout>
               <DYMOPoint>
@@ -122,22 +122,7 @@ export function genXML(url: string): string {
               <IsVertical>False</IsVertical>
               <LineTextSpan>
                 <TextSpan>
-                  <Text>IC Cabinet</Text>
-                  <FontInfo>
-                    <FontName>Helvetica</FontName>
-                    <FontSize>29.9</FontSize>
-                    <IsBold>False</IsBold>
-                    <IsItalic>False</IsItalic>
-                    <IsUnderline>False</IsUnderline>
-                    <FontBrush>
-                      <SolidColorBrush>
-                        <Color A="1" R="0" G="0" B="0"></Color>
-                      </SolidColorBrush>
-                    </FontBrush>
-                  </FontInfo>
-                </TextSpan>
-                <TextSpan>
-                  <Text>s</Text>
+                  <Text>${label}</Text>
                   <FontInfo>
                     <FontName>Helvetica</FontName>
                     <FontSize>29.9</FontSize>
