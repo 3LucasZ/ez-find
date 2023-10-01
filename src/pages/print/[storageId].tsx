@@ -12,16 +12,19 @@ import { GetServerSideProps } from "next";
 import Header from "components/Header";
 import { useQRCode } from "next-qrcode";
 import { genXML } from "services/genXML";
+import Router from "next/router";
 type Props = {
   url: string;
   img: string;
   xml: string;
+  id: number;
 };
 const StoragePage: React.FC<Props> = (props) => {
   const { Image } = useQRCode();
-  const Dymo = require("dymojs"),
-    dymo = new Dymo();
+
   console.log("url", props.url);
+  console.log("id", props.id);
+  console.log("xml", props.xml);
 
   const dymoPrintUI =
     props.img == "" ? (
@@ -51,8 +54,16 @@ const StoragePage: React.FC<Props> = (props) => {
           <Button
             onClick={() => {
               console.log("Print");
-
-              dymo.print("DYMO LabelWriter 450", props.xml);
+              const Dymo = require("dymojs"),
+                dymo = new Dymo();
+              dymo
+                .print("DYMO LabelWriter 450", props.xml)
+                .then((response: any, result: any) => {
+                  console.log("Response: ", response, "result: ", result);
+                })
+                .catch(() => {
+                  Router.push({ pathname: "/print/" + props.id });
+                });
             }}
           >
             Print
@@ -107,9 +118,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
+  // .then(() => {
+  //   console.log("PRISMA SUCCESS");
+  // })
+  // .catch((err: any) => {
+  //   console.log("PRISMA BROKEN");
+  // });
   const domain = context.req.headers.host;
   const path = "/item/" + storage?.id;
-  const url = domain + path;
+  const url = "http://" + domain + path;
   const xml: string = genXML(url, "" + storage?.name);
   const Dymo = require("dymojs"),
     dymo = new Dymo();
@@ -128,6 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       url: url,
       img: img,
       xml: xml,
+      id: storage?.id,
     },
   };
 };
