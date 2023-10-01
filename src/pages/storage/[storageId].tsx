@@ -62,14 +62,7 @@ const StoragePage: React.FC<Props> = (props) => {
 
   console.log("url", props.url);
   console.log("storage", storage);
-
   console.log("img", props.img);
-  const Dymo = require("dymojs"),
-    dymo = new Dymo();
-  //console.log("render", dymo.renderLabel(props.xml));
-  // dymo.renderLabel(props.xml).then((imageData: any) => {
-  //   console.log(imageData);
-  // });
 
   return (
     <Stack>
@@ -125,11 +118,17 @@ const StoragePage: React.FC<Props> = (props) => {
             <Heading>Dymo Print:</Heading>
           </Center>
           <Center>
-            <img src={"data:image/png;base64, " + props.img} />
+            <img
+              style={{ backgroundColor: "red", padding: "50px" }}
+              src={"data:image/png;base64, " + props.img}
+            />
           </Center>
           <Center>
             <Button
               onClick={() => {
+                console.log("Print");
+                const Dymo = require("dymojs"),
+                  dymo = new Dymo();
                 dymo.print("DYMO LabelWriter 450", props.xml);
               }}
             >
@@ -156,7 +155,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const domain = context.req.headers.host;
   const path = context.resolvedUrl;
   const url = "http://" + domain + path;
-
   const xml: string = genXML(url);
   const Dymo = require("dymojs"),
     dymo = new Dymo();
