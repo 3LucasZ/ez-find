@@ -8,38 +8,25 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { id, name, storageIds } = req.body;
-  const op1 = await prisma.item.upsert({
+  const op = await prisma.item.upsert({
     where: {
       id: id,
     },
     update: {
       name: name,
       storages: {
-        set: [],
+        set: storageIds,
       },
     },
     create: {
       name: name,
       storages: {
-        connect: [],
+        connect: storageIds,
       },
     },
     include: {
       storages: true,
     },
   });
-  const op2 = await prisma.item.update({
-    where: {
-      id: id,
-    },
-    data: {
-      storages: {
-        set: storageIds,
-      },
-    },
-    include: {
-      storages: true,
-    },
-  });
-  return res.status(200).json({ op1, op2 });
+  return res.status(200).json(op);
 }
