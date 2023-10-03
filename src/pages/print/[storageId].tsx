@@ -6,6 +6,7 @@ import {
   SimpleGrid,
   Stack,
   Link,
+  Image as ChImage,
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
@@ -18,6 +19,9 @@ type Props = {
   img: string;
   xml: string;
   id: number;
+  name: string;
+  status: string;
+  printers: string;
 };
 const StoragePage: React.FC<Props> = (props) => {
   const { Image } = useQRCode();
@@ -26,10 +30,18 @@ const StoragePage: React.FC<Props> = (props) => {
   console.log("id", props.id);
   console.log("xml", props.xml);
 
+  var parseString = require("xml2js").parseString;
+  // var res;
+  // parseString(props.xml, function (err, result) {
+  //   res = result;
+  // });
   const dymoPrintUI =
     props.img == "" ? (
-      <Stack>
-        <Text fontSize="xl">
+      <Stack spacing={3}>
+        <Center>
+          <Heading>Dymo</Heading>
+        </Center>
+        <Text fontSize="2xl">
           {
             "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout our instructions "
           }
@@ -43,15 +55,13 @@ const StoragePage: React.FC<Props> = (props) => {
         </Text>
       </Stack>
     ) : (
-      <>
+      <Stack spacing={3}>
         <Center>
-          <img
-            style={{ backgroundColor: "red", padding: "50px" }}
-            src={"data:image/png;base64, " + props.img}
-          />
+          <Heading>Dymo</Heading>
         </Center>
         <Center>
           <Button
+            colorScheme="teal"
             onClick={() => {
               console.log("Print");
               const Dymo = require("dymojs"),
@@ -69,7 +79,18 @@ const StoragePage: React.FC<Props> = (props) => {
             Print
           </Button>
         </Center>
-      </>
+        <Center>
+          <ChImage
+            padding="4"
+            bgColor="teal.100"
+            borderRadius="3vmin"
+            src={"data:image/png;base64, " + props.img}
+            alt="label"
+          />
+        </Center>
+        <Text>Connected to service: {props.status}</Text>
+        <Text>{props.printers}</Text>
+      </Stack>
     );
   return (
     <Stack>
@@ -77,8 +98,9 @@ const StoragePage: React.FC<Props> = (props) => {
       <SimpleGrid columns={2} spacing={10}>
         <div>
           <Center>
-            <Heading>Manual Print:</Heading>
+            <Heading>Manual Printing</Heading>
           </Center>
+          <Center> Take a screenshot of the image below:</Center>
           <Center>
             <Image
               text={props.url}
@@ -96,13 +118,11 @@ const StoragePage: React.FC<Props> = (props) => {
               }}
             />
           </Center>
-        </div>
-        <div>
           <Center>
-            <Heading>Dymo Print:</Heading>
+            <Text fontSize="2xl">{props.name}</Text>
           </Center>
-          {dymoPrintUI}
         </div>
+        <div>{dymoPrintUI}</div>
       </SimpleGrid>
     </Stack>
   );
@@ -133,11 +153,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   var img: string = "AemptyA";
   await dymo
     .renderLabel(xml)
-    .then((imageData: any) => {
+    .then((imageData: string) => {
       img = imageData.slice(1, -1);
     })
     .catch((err: any) => {
       img = "";
+    });
+  var status: string = "null status";
+  await dymo
+    .getStatus()
+    .then((dymoStatus: string) => {
+      status = dymoStatus;
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
+  var printers: string = "null printers";
+  await dymo
+    .getPrinters()
+    .then((dymoPrinters: string) => {
+      printers = dymoPrinters;
+    })
+    .catch((err: any) => {
+      console.log(err);
     });
 
   return {
@@ -146,6 +184,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       img: img,
       xml: xml,
       id: storage?.id,
+      name: storage?.name,
+      status: status,
+      printers: printers,
     },
   };
 };
