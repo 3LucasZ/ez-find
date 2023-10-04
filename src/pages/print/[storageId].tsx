@@ -66,6 +66,7 @@ const StoragePage: React.FC<Props> = (props) => {
               console.log("Print");
               const Dymo = require("dymojs"),
                 dymo = new Dymo();
+              //dymo.hostname = "host.docker.internal";
               dymo
                 .print("DYMO LabelWriter 450", props.xml)
                 .then((response: any, result: any) => {
@@ -145,11 +146,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   console.log("PRISMA BROKEN");
   // });
   const domain = context.req.headers.host;
+  //const domain = "host.docker.internal";
   const path = "/item/" + storage?.id;
   const url = "http://" + domain + path;
   const xml: string = genXML(url, "" + storage?.name);
   const Dymo = require("dymojs"),
     dymo = new Dymo();
+  //dymo.hostname = "host.docker.internal";
   var img: string = "AemptyA";
   await dymo
     .renderLabel(xml)

@@ -19,7 +19,6 @@ import ItemWidget from "components/Item";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 type Props = {
   storage: StorageProps;
-  url: string;
 };
 const StoragePage: React.FC<Props> = (props) => {
   const handleDelete = async () => {
