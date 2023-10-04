@@ -14,21 +14,55 @@ import Header from "components/Header";
 import { useQRCode } from "next-qrcode";
 import { genXML } from "services/genXML";
 import Router from "next/router";
+import { useEffect, useState } from "react";
 type Props = {
   url: string;
-  img: string;
   xml: string;
   id: number;
   name: string;
-  status: string;
-  printers: string;
 };
 const StoragePage: React.FC<Props> = (props) => {
+  const [img, setImg] = useState("");
+  const [status, setStatus] = useState("");
+  const [printers, setPrinters] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      const Dymo = require("dymojs"),
+        dymo = new Dymo();
+      await dymo
+        .renderLabel(props.xml)
+        .then((imageData: string) => {
+          setImg(imageData.slice(1, -1));
+        })
+        .catch((err: any) => {
+          setImg("");
+        });
+      await dymo
+        .getStatus()
+        .then((dymoStatus: string) => {
+          setStatus(dymoStatus);
+        })
+        .catch((err: any) => {
+          setStatus("");
+        });
+      await dymo
+        .getPrinters()
+        .then((dymoPrinters: string) => {
+          setPrinters(dymoPrinters);
+        })
+        .catch((err: any) => {
+          setPrinters("");
+        });
+    };
+    fetchData().catch((e) => {
+      console.error("An error occured while fetching the data: ", e);
+    });
+  }, []);
   const { Image } = useQRCode();
 
-  console.log("url", props.url);
-  console.log("id", props.id);
-  console.log("xml", props.xml);
+  // console.log("url", props.url);
+  // console.log("id", props.id);
+  // console.log("xml", props.xml);
 
   var parseString = require("xml2js").parseString;
   // var res;
@@ -36,7 +70,7 @@ const StoragePage: React.FC<Props> = (props) => {
   //   res = result;
   // });
   const dymoPrintUI =
-    props.img == "" ? (
+    img == "" ? (
       <Stack spacing={3}>
         <Center>
           <Heading>Dymo</Heading>
@@ -66,6 +100,7 @@ const StoragePage: React.FC<Props> = (props) => {
               console.log("Print");
               const Dymo = require("dymojs"),
                 dymo = new Dymo();
+
               //dymo.hostname = "host.docker.internal";
               dymo
                 .print("DYMO LabelWriter 450", props.xml)
@@ -85,12 +120,12 @@ const StoragePage: React.FC<Props> = (props) => {
             padding="4"
             bgColor="teal.100"
             borderRadius="3vmin"
-            src={"data:image/png;base64, " + props.img}
+            src={"data:image/png;base64, " + img}
             alt="label"
           />
         </Center>
-        <Text>Connected to service: {props.status}</Text>
-        <Text>{props.printers}</Text>
+        <Text>Connected to service: {status}</Text>
+        <Text>{printers}</Text>
       </Stack>
     );
   return (
@@ -150,46 +185,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const path = "/item/" + storage?.id;
   const url = "http://" + domain + path;
   const xml: string = genXML(url, "" + storage?.name);
-  const Dymo = require("dymojs"),
-    dymo = new Dymo();
-  //dymo.hostname = "host.docker.internal";
-  var img: string = "AemptyA";
-  await dymo
-    .renderLabel(xml)
-    .then((imageData: string) => {
-      img = imageData.slice(1, -1);
-    })
-    .catch((err: any) => {
-      img = "";
-    });
-  var status: string = "null status";
-  await dymo
-    .getStatus()
-    .then((dymoStatus: string) => {
-      status = dymoStatus;
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
-  var printers: string = "null printers";
-  await dymo
-    .getPrinters()
-    .then((dymoPrinters: string) => {
-      printers = dymoPrinters;
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
 
   return {
     props: {
       url: url,
-      img: img,
       xml: xml,
       id: storage?.id,
       name: storage?.name,
-      status: status,
-      printers: printers,
     },
   };
 };
