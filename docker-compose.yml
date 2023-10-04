@@ -12,4 +12,4 @@ services:
       - "3000:3000"
     image: ez-find
     environment:
-      - DATABASE_URL="postgresql://lucaszheng:lucaszheng@localhost:5432/ez-find-db"
+      - DATABASE_URL=postgresql://lucaszheng:lucaszheng@host.docker.internal:5432/ez-find-db
