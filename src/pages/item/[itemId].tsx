@@ -46,7 +46,7 @@ const ItemPage: React.FC<Props> = (props) => {
 
         <List spacing={3}>
           {item.storages.map((storage) => (
-            <ListItem>
+            <ListItem key={storage.id}>
               <StorageWidget storage={storage} />
             </ListItem>
           ))}

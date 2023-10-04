@@ -41,7 +41,7 @@ export default function ConfirmDeleteModal(props: PageProps) {
               No
             </Button>
             <Button onClick={handleDelete} colorScheme="red" ml="2">
-              I'm sure
+              I am sure
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -34,7 +34,12 @@ export const RouteButton = ({
               <Heading size="md">{text}</Heading>
             </Center>
             <Center>
-              <Image src={imageUrl} borderRadius="lg" height="20vh" />
+              <Image
+                src={imageUrl}
+                borderRadius="lg"
+                height="20vh"
+                alt="button"
+              />
             </Center>
           </CardBody>
         </Card>

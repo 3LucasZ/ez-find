@@ -44,7 +44,7 @@ const Items: React.FC<PageProps> = (props) => {
       <Box overflowY="auto" height="50vh">
         <Stack ml="33vw" mr="33vw">
           {state.list.map((item) => (
-            <Item item={item} />
+            <Item item={item} key={item.id} />
           ))}
         </Stack>
       </Box>
