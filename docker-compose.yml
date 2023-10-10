@@ -10,6 +10,6 @@ services:
     working_dir: /app
     ports:
       - "3000:3000"
-    image: ez-find
+    image: daftdove/ezfind:arm64
     environment:
       - DATABASE_URL=postgresql://lucaszheng:lucaszheng@host.docker.internal:5432/ez-find-db
