@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  app:
+    image: daftdove/ezfind
+    platform: "linux/arm32v7"
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://pi:ezcheck@host.docker.internal:5432/ezfinddb
