@@ -1,8 +1,7 @@
 ##### DEPENDENCIES
-ARG pf=linux/arm/v7
-ARG NEXT_PUBLIC_CLIENTVAR=clientvar
+ARG PLATFORM=linux/arm64
 
-FROM --platform=${pf} node:16-alpine3.17 AS deps
+FROM --platform=${PLATFORM} node:16-alpine3.17 AS deps
 RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
 
@@ -23,8 +22,9 @@ RUN \
 
 ##### BUILDER
 
-FROM --platform=${pf} node:16-alpine3.17 AS builder
+FROM --platform=${PLATFORM} node:16-alpine3.17 AS builder
 ARG DATABASE_URL
+ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -40,7 +40,7 @@ RUN \
 
 ##### RUNNER
 
-FROM --platform=${pf} node:16-alpine3.17 AS runner
+FROM --platform=${PLATFORM} node:16-alpine3.17 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
