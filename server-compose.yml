@@ -7,5 +7,5 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://ezserver:questpass@host.docker.internal:5432/ezfinddb
+      - DATABASE_URL=postgresql://ezserver:questpass@host.docker.internal:5432/ezfinddb?schema=public
 # DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
