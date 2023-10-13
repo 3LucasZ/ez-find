@@ -29,6 +29,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+COPY migrate-and-start.sh .
+RUN chmod +x migrate-and-start.sh
+
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \
@@ -57,8 +60,10 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY --from=builder /app/migrate-and-start.sh .
+
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["./migrate-and-start.sh"]
