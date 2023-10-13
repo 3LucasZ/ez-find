@@ -1,6 +1,18 @@
 version: "3.9"
 services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5555:5432"
+    environment:
+      - POSTGRES_USER=ezfind
+      - POSTGRES_PASSWORD=questpass
+      - POSTGRES_DB=ezfinddb
+    volumes:
+      - db:/var/lib/postgresql/data
   app:
+    image: daftdove/ezfind:latest
     platform: "linux/arm64"
     build:
       context: .
@@ -10,6 +22,9 @@ services:
     working_dir: /app
     ports:
       - "3000:3000"
-    image: daftdove/ezfind:latest
     environment:
-      - DATABASE_URL=postgresql://lucaszheng:lucaszheng@host.docker.internal:5432/ez-find-db
+      - DATABASE_URL=postgresql://ezfind:questpass@db:5432/ezfinddb
+volumes:
+  db:
+    driver: local
+# NOTE: DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA

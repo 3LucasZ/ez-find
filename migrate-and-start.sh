@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/bin/sh
+npm run build
 npx prisma generate
-npx prisma db push
-node server.js
+npx prisma migrate dev --name init
+npm run start
