@@ -12,11 +12,14 @@ Steps in order to have dymo printing functionality:
 
 4. (Note) There is currently only support for DYMO LabelWriter 450 Printers
 
-# Website
-
-If using EZ Server Deployment, go to: 192.168.1.229:3000/
-
 # Useful Commands
 
 - cancel -a -x # cancel all printer jobs
 - /bin/bash /Applications/DYMO.WebApi.Mac.Host.app/Contents/Resources/InstallCertificates.sh
+
+# Future plans
+
+- Make the labels multi-line when it gets too long
+- Display the printer meta data xml properly
+- Non-admins can only search/view items/storages
+- Admins can create, update, delete, etc
