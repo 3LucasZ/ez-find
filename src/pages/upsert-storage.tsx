@@ -13,8 +13,6 @@ import { ItemProps } from "components/Item";
 enum FormState {
   Input,
   Submitting,
-  Error,
-  Success,
 }
 type PageProps = {
   allItems: ItemProps[];
@@ -54,10 +52,15 @@ const StorageDraft: React.FC<PageProps> = (props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push(isNew ? "view-storages" : "storage/" + id);
-      setFormState(FormState.Success);
+      if (res.status == 500) {
+        setFormState(FormState.Input);
+        alert("Error: a storage with the same name already exists.");
+      } else {
+        setFormState(FormState.Input);
+        await Router.push(isNew ? "view-storages" : "storage/" + id);
+      }
     } catch (error) {
-      setFormState(FormState.Error);
+      setFormState(FormState.Input);
       console.error(error);
     }
   };

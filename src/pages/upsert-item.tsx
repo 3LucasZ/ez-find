@@ -13,8 +13,6 @@ import { ItemProps } from "components/Item";
 enum FormState {
   Input,
   Submitting,
-  Error,
-  Success,
 }
 type PageProps = {
   allStorages: StorageProps[];
