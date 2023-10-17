@@ -52,10 +52,15 @@ const ItemDraft: React.FC<PageProps> = (props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push(isNew ? "view-items" : "item/" + id);
-      setFormState(FormState.Success);
+      if (res.status == 500) {
+        setFormState(FormState.Input);
+        alert("Error: an item with the same name already exists.");
+      } else {
+        setFormState(FormState.Input);
+        await Router.push(isNew ? "view-items" : "item/" + id);
+      }
     } catch (error) {
-      setFormState(FormState.Error);
+      setFormState(FormState.Input);
       console.error(error);
     }
   };
@@ -105,6 +110,7 @@ const ItemDraft: React.FC<PageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const prisma = new PrismaClient();
   const allStorages = await prisma.storage.findMany();
+  const allItemNames = await prisma.item.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
   const find = await prisma.item.findUnique({
