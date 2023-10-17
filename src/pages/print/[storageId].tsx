@@ -15,16 +15,33 @@ import { useQRCode } from "next-qrcode";
 import { genXML } from "services/genXML";
 import Router from "next/router";
 import { useEffect, useState } from "react";
+import { MultiValue, Select } from "chakra-react-select";
 type Props = {
   url: string;
   xml: string;
   id: number;
   name: string;
 };
+
+type LabelWriterPrinter = {
+  id: number;
+  name: string;
+  modelName: string;
+  isConnected: boolean;
+  isLocal: boolean;
+  isTwinTurbo: boolean;
+};
+
 const StoragePage: React.FC<Props> = (props) => {
-  const [img, setImg] = useState("");
-  const [status, setStatus] = useState("");
-  const [printers, setPrinters] = useState("");
+  const [img, setImg] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [printers, setPrinters] = useState<LabelWriterPrinter[]>([]);
+  const [options, setOptions] = useState<
+    MultiValue<{ value: number; label: string }>
+  >([]);
+  const [plain, setPlain] = useState<string>("");
+  const [pain, setPain] = useState<string>("");
+
   useEffect(() => {
     const fetchData = async () => {
       const Dymo = require("dymojs"),
@@ -47,11 +64,50 @@ const StoragePage: React.FC<Props> = (props) => {
         });
       await dymo
         .getPrinters()
-        .then((dymoPrinters: string) => {
-          setPrinters(dymoPrinters);
+        .then((dymoPrintersXML: string) => {
+          setPlain(dymoPrintersXML);
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(dymoPrintersXML, "text/xml");
+          const printers: LabelWriterPrinter[] = [];
+          Array.from(
+            {
+              length: xmlDoc.getElementsByTagName("LabelWriterPrinter").length,
+            },
+            (x, i) => {
+              const name =
+                xmlDoc.getElementsByTagName("LabelWriterPrinter")[i]
+                  .childNodes[0].childNodes[0].nodeValue;
+              const modelName =
+                xmlDoc.getElementsByTagName("LabelWriterPrinter")[i]
+                  .childNodes[1].childNodes[0].nodeValue;
+              const isConnected =
+                xmlDoc.getElementsByTagName("LabelWriterPrinter")[i]
+                  .childNodes[2].childNodes[0].nodeValue == "True";
+              const isLocal =
+                xmlDoc.getElementsByTagName("LabelWriterPrinter")[i]
+                  .childNodes[3].childNodes[0].nodeValue == "True";
+              const isTwinTurbo =
+                xmlDoc.getElementsByTagName("LabelWriterPrinter")[i]
+                  .childNodes[4].childNodes[0].nodeValue == "True";
+              printers.push({
+                id: i,
+                name: name!,
+                modelName: modelName!,
+                isConnected: isConnected,
+                isLocal: isLocal,
+                isTwinTurbo: isTwinTurbo,
+              });
+            }
+          );
+          setPrinters(printers);
+          const options = printers.map((printer) => ({
+            value: printer.id,
+            label: printer.name,
+          }));
+          setOptions(options);
         })
         .catch((err: any) => {
-          setPrinters("");
+          console.log(err);
         });
     };
     fetchData().catch((e) => {
@@ -64,11 +120,6 @@ const StoragePage: React.FC<Props> = (props) => {
   // console.log("id", props.id);
   // console.log("xml", props.xml);
 
-  var parseString = require("xml2js").parseString;
-  // var res;
-  // parseString(props.xml, function (err, result) {
-  //   res = result;
-  // });
   const dymoPrintUI =
     img == "" ? (
       <Stack spacing={3}>
@@ -124,8 +175,10 @@ const StoragePage: React.FC<Props> = (props) => {
             alt="label"
           />
         </Center>
-        <Text>Connected to service: {status}</Text>
-        <Text>{printers}</Text>
+        <Text>Connected to DYMO service: {status}</Text>
+        <Select options={options} />
+        <Text>{plain}</Text>
+        <Text>{pain}</Text>
       </Stack>
     );
   return (
