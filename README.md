@@ -21,5 +21,6 @@ Steps in order to have dymo printing functionality:
 
 - Make the labels multi-line when it gets too long
 - Display the printer meta data xml properly
+- Selection for different types of DYMO printers
 - Non-admins can only search/view items/storages
 - Admins can create, update, delete, etc
