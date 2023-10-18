@@ -7,6 +7,7 @@ import {
   Stack,
   Link,
   Image as ChImage,
+  Box,
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
@@ -16,6 +17,7 @@ import { genXML } from "services/genXML";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import { MultiValue, Select } from "chakra-react-select";
+
 type Props = {
   url: string;
   xml: string;
@@ -128,7 +130,7 @@ const StoragePage: React.FC<Props> = (props) => {
         </Center>
         <Text fontSize="2xl">
           {
-            "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout our instructions "
+            "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout "
           }
           <Link
             color="teal.500"
@@ -140,10 +142,11 @@ const StoragePage: React.FC<Props> = (props) => {
         </Text>
       </Stack>
     ) : (
-      <Stack spacing={3}>
+      <Stack spacing={3} marginRight={10}>
         <Center>
           <Heading>Dymo</Heading>
         </Center>
+        <Select options={options} />
         <Center>
           <Button
             colorScheme="teal"
@@ -175,8 +178,17 @@ const StoragePage: React.FC<Props> = (props) => {
             alt="label"
           />
         </Center>
-        <Text>Connected to DYMO service: {status}</Text>
-        <Select options={options} />
+        <Box
+          bg={status ? "green.400" : "tomato"}
+          p={4}
+          color="white"
+          borderRadius="10"
+        >
+          {status
+            ? "Connected to DYMO service"
+            : "Not connected to DYMO service"}
+        </Box>
+
         <Text>{plain}</Text>
         <Text>{pain}</Text>
       </Stack>
