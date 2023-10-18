@@ -16,7 +16,7 @@ import { useQRCode } from "next-qrcode";
 import { genXML } from "services/genXML";
 import Router from "next/router";
 import { useEffect, useState } from "react";
-import { MultiValue, Select } from "chakra-react-select";
+import { Select } from "chakra-react-select";
 
 type Props = {
   url: string;
@@ -38,9 +38,10 @@ const StoragePage: React.FC<Props> = (props) => {
   const [img, setImg] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [printers, setPrinters] = useState<LabelWriterPrinter[]>([]);
-  const [options, setOptions] = useState<
-    MultiValue<{ value: number; label: string }>
-  >([]);
+  const [options, setOptions] = useState<{ value: number; label: string }[]>(
+    []
+  );
+  const [value, setValue] = useState<{ value: number; label: string }>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,7 +105,8 @@ const StoragePage: React.FC<Props> = (props) => {
             label: printer.name,
           }));
           setOptions(options);
-          console.log(options);
+          setValue(options[0]);
+          console.log(options[0]);
         })
         .catch((err: any) => {
           console.log(err);
@@ -120,74 +122,6 @@ const StoragePage: React.FC<Props> = (props) => {
   // console.log("id", props.id);
   // console.log("xml", props.xml);
 
-  const dymoPrintUI =
-    img == "" ? (
-      <Stack spacing={3}>
-        <Center>
-          <Heading>Dymo</Heading>
-        </Center>
-        <Text fontSize="2xl">
-          {
-            "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout "
-          }
-          <Link
-            color="teal.500"
-            href="https://github.com/3LucasZ/ez-find/blob/main/README.md"
-          >
-            {" our instructions "}
-          </Link>
-          on how to enable the service. Thank you!
-        </Text>
-      </Stack>
-    ) : (
-      <Stack spacing={3} marginRight={10}>
-        <Center>
-          <Heading>Dymo</Heading>
-        </Center>
-        <Select defaultValue={options.at(0)} options={options} />
-        <Center>
-          <Button
-            colorScheme="teal"
-            onClick={() => {
-              console.log("Print");
-              const Dymo = require("dymojs"),
-                dymo = new Dymo();
-
-              //dymo.hostname = "host.docker.internal";
-              dymo
-                .print("DYMO LabelWriter 450", props.xml)
-                .then((response: any, result: any) => {
-                  console.log("Response: ", response, "result: ", result);
-                })
-                .catch(() => {
-                  Router.push({ pathname: "/print/" + props.id });
-                });
-            }}
-          >
-            Print
-          </Button>
-        </Center>
-        <Center>
-          <ChImage
-            padding="4"
-            bgColor="teal.100"
-            borderRadius="3vmin"
-            src={"data:image/png;base64, " + img}
-            alt="label"
-          />
-        </Center>
-        <Box
-          bg={status ? "green.400" : "tomato"}
-          p={4}
-          color="white"
-          borderRadius="10"
-        >
-          {status
-            ? "Connected to DYMO service"
-            : "Not connected to DYMO service"}
-        </Box>
-      </Stack>
-    );
   return (
     <Stack>
       <Header />
@@ -218,7 +152,76 @@ const StoragePage: React.FC<Props> = (props) => {
             <Text fontSize="2xl">{props.name}</Text>
           </Center>
         </div>
-        <div>{dymoPrintUI}</div>
+        <div>
+          {/* DYMO UI RHS */}
+          {img == "" ? (
+            <Stack spacing={3}>
+              <Center>
+                <Heading>Dymo</Heading>
+              </Center>
+              <Text fontSize="2xl">
+                {
+                  "Sorry, you can not use the DYMO print feature. We could not detect the DYMO Connect service on your device. Please checkout "
+                }
+                <Link
+                  color="teal.500"
+                  href="https://github.com/3LucasZ/ez-find/blob/main/README.md"
+                >
+                  {" our instructions "}
+                </Link>
+                on how to enable the service. Thank you!
+              </Text>
+            </Stack>
+          ) : (
+            <Stack spacing={3} marginRight={10}>
+              <Center>
+                <Heading>Dymo</Heading>
+              </Center>
+              <Select value={value} options={options} />
+              <Center>
+                <Button
+                  colorScheme="teal"
+                  onClick={() => {
+                    console.log("Print");
+                    const Dymo = require("dymojs"),
+                      dymo = new Dymo();
+
+                    //dymo.hostname = "host.docker.internal";
+                    dymo
+                      .print(value?.label, props.xml)
+                      .then((response: any, result: any) => {
+                        console.log("Response: ", response, "result: ", result);
+                      })
+                      .catch(() => {
+                        Router.push({ pathname: "/print/" + props.id });
+                      });
+                  }}
+                >
+                  Print
+                </Button>
+              </Center>
+              <Center>
+                <ChImage
+                  padding="4"
+                  bgColor="teal.100"
+                  borderRadius="3vmin"
+                  src={"data:image/png;base64, " + img}
+                  alt="label"
+                />
+              </Center>
+              <Box
+                bg={status ? "green.400" : "tomato"}
+                p={4}
+                color="white"
+                borderRadius="10"
+              >
+                {status
+                  ? "Connected to DYMO service"
+                  : "Not connected to DYMO service"}
+              </Box>
+            </Stack>
+          )}
+        </div>
       </SimpleGrid>
     </Stack>
   );
