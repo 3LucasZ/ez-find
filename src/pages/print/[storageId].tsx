@@ -41,14 +41,12 @@ const StoragePage: React.FC<Props> = (props) => {
   const [options, setOptions] = useState<
     MultiValue<{ value: number; label: string }>
   >([]);
-  const [plain, setPlain] = useState<string>("");
-  const [pain, setPain] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
       const Dymo = require("dymojs"),
         dymo = new Dymo();
-      await dymo
+      await dymo //get sticker preview as h265 string
         .renderLabel(props.xml)
         .then((imageData: string) => {
           setImg(imageData.slice(1, -1));
@@ -56,7 +54,7 @@ const StoragePage: React.FC<Props> = (props) => {
         .catch((err: any) => {
           setImg("");
         });
-      await dymo
+      await dymo //get service connection status
         .getStatus()
         .then((dymoStatus: string) => {
           setStatus(dymoStatus);
@@ -64,10 +62,9 @@ const StoragePage: React.FC<Props> = (props) => {
         .catch((err: any) => {
           setStatus("");
         });
-      await dymo
+      await dymo //get connected printers
         .getPrinters()
         .then((dymoPrintersXML: string) => {
-          setPlain(dymoPrintersXML);
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(dymoPrintersXML, "text/xml");
           const printers: LabelWriterPrinter[] = [];
@@ -107,6 +104,7 @@ const StoragePage: React.FC<Props> = (props) => {
             label: printer.name,
           }));
           setOptions(options);
+          console.log(options);
         })
         .catch((err: any) => {
           console.log(err);
@@ -146,7 +144,7 @@ const StoragePage: React.FC<Props> = (props) => {
         <Center>
           <Heading>Dymo</Heading>
         </Center>
-        <Select options={options} />
+        <Select defaultValue={options.at(0)} options={options} />
         <Center>
           <Button
             colorScheme="teal"
@@ -188,9 +186,6 @@ const StoragePage: React.FC<Props> = (props) => {
             ? "Connected to DYMO service"
             : "Not connected to DYMO service"}
         </Box>
-
-        <Text>{plain}</Text>
-        <Text>{pain}</Text>
       </Stack>
     );
   return (
