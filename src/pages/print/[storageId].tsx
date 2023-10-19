@@ -222,13 +222,17 @@ const StoragePage: React.FC<Props> = (props) => {
                   : "Not connected to DYMO service"}
               </Box>
               <Box
-                bg={printers[value!.value].isConnected ? "green.400" : "tomato"}
+                bg={
+                  value != null && printers[value.value].isConnected
+                    ? "green.400"
+                    : "tomato"
+                }
                 p={4}
                 color="white"
                 borderRadius="10"
               >
-                {status
-                  ? "Not connected to printer"
+                {value != null && printers[value.value].isConnected
+                  ? "Connected to printer"
                   : "Not connected to printer"}
               </Box>
             </Stack>
