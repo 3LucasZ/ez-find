@@ -13,7 +13,7 @@ import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Header from "components/Header";
 import { useQRCode } from "next-qrcode";
-import { genXML } from "services/genXML";
+import { fixate, genXML } from "services/genXML";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
@@ -149,7 +149,9 @@ const StoragePage: React.FC<Props> = (props) => {
             />
           </Center>
           <Center>
-            <Text fontSize="2xl">{props.name}</Text>
+            <Text fontSize="2xl" whiteSpace="pre-line">
+              {fixate(props.name)}
+            </Text>
           </Center>
         </div>
         <div>
@@ -218,6 +220,16 @@ const StoragePage: React.FC<Props> = (props) => {
                 {status
                   ? "Connected to DYMO service"
                   : "Not connected to DYMO service"}
+              </Box>
+              <Box
+                bg={printers[value!.value].isConnected ? "green.400" : "tomato"}
+                p={4}
+                color="white"
+                borderRadius="10"
+              >
+                {status
+                  ? "Not connected to printer"
+                  : "Not connected to printer"}
               </Box>
             </Stack>
           )}
