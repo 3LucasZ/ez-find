@@ -1,4 +1,19 @@
+export function fixate(str: string): string {
+  const mx = 15;
+  if (str.length > mx) {
+    const sam = str.substring(0, mx);
+    const i = sam.lastIndexOf(" ");
+    if (i == -1) {
+      return sam + "\n" + fixate(str.substring(mx));
+    } else {
+      return str.substring(0, i) + "\n" + fixate(str.substring(i));
+    }
+  } else {
+    return str;
+  }
+}
 export function genXML(url: string, label: string): string {
+  label = fixate(label);
   return `<?xml version="1.0" encoding="utf-8"?>
   <DesktopLabel Version="1">
     <DYMOLabel Version="3">
