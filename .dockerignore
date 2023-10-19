@@ -1,8 +1,19 @@
-.env
+# docker
 Dockerfile
 .dockerignore
+
+# git
+.git
+.gitignore
+
+# env
+.env
+.env.local
+
+# node
 node_modules
 npm-debug.log
+
+# misc
 README.md
 .next
-.git
