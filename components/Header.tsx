@@ -14,6 +14,11 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Header() {
   const { data: session } = useSession();
+  const admin = session ? (
+    <Link href={"manage-admin"}>Admin Dashboard</Link>
+  ) : (
+    ""
+  );
   const auth = (
     <Stack>
       <Text>
@@ -36,7 +41,7 @@ export default function Header() {
       <Box h="1vh"></Box>
       <Center>
         <SimpleGrid columns={3} spacing={10}>
-          <Box></Box>
+          <Box>{admin}</Box>
           <Box>
             <Link href={"/"} style={{ textDecoration: "none" }}>
               <Heading as="h1" size="4xl" color="teal.500">

@@ -22,3 +22,8 @@ model Storage {
   name  String @unique @db.VarChar(255)
   items Item[]
 }
+
+model Admin {
+  id Int @id @default(autoincrement())
+  email String @unique
+}
