@@ -29,10 +29,10 @@ export default function Header() {
       <Button
         onClick={(e) => {
           e.preventDefault();
-          session ? signOut() : signIn();
+          session ? signOut() : signIn("google");
         }}
       >
-        {session ? "Sign out" : "Sign in"}
+        {session ? "Sign out" : "Google sign in"}
       </Button>
     </Stack>
   );
