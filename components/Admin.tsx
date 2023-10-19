@@ -1,4 +1,5 @@
-import { Box } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Box, HStack, IconButton } from "@chakra-ui/react";
 
 export type AdminProps = {
   id: number;
@@ -10,16 +11,24 @@ const AdminWidget: React.FC<{ admin: AdminProps }> = ({ admin }) => {
     bg: "teal.400",
   };
   return (
-    <Box
-      borderRadius="md"
-      bg="teal.300"
-      color="white"
-      px={4}
-      h={8}
-      _hover={hoverState}
-    >
-      {admin.email}
-    </Box>
+    <HStack>
+      <Box
+        borderRadius="md"
+        bg="teal.300"
+        color="white"
+        px={4}
+        h={8}
+        _hover={hoverState}
+      >
+        {admin.email}
+      </Box>
+      <IconButton
+        onClick={() => console.log("HAHA")}
+        colorScheme="red"
+        aria-label="delete"
+        icon={<DeleteIcon />}
+      />
+    </HStack>
   );
 };
 
