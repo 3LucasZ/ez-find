@@ -9,6 +9,7 @@ import { StorageProps } from "components/Storage";
 import Header from "components/Header";
 import { GetServerSideProps } from "next";
 import { ItemProps } from "components/Item";
+import Layout from "components/Layout";
 
 enum FormState {
   Input,
@@ -64,8 +65,7 @@ const ItemDraft: React.FC<PageProps> = (props) => {
   };
 
   return (
-    <Stack>
-      <Header />
+    <Layout>
       <Box h="calc(100vh)">
         <div className="add-item-form">
           <form onSubmit={submitData}>
@@ -101,7 +101,7 @@ const ItemDraft: React.FC<PageProps> = (props) => {
           </form>
         </div>
       </Box>
-    </Stack>
+    </Layout>
   );
 };
 

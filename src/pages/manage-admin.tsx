@@ -1,11 +1,10 @@
 import { Box, Button, HStack, Input, Stack } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
-import Header from "components/Header";
 import Admin, { AdminProps } from "components/Admin";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { cursorTo } from "readline";
 import Router from "next/router";
+import Layout from "components/Layout";
 
 type PageProps = {
   admins: AdminProps[];
@@ -54,8 +53,7 @@ const Admins: React.FC<PageProps> = (props) => {
     }
   };
   return (
-    <Stack>
-      <Header></Header>
+    <Layout>
       <HStack pl="25vw" pr="25vw">
         <Input
           variant="filled"
@@ -82,7 +80,7 @@ const Admins: React.FC<PageProps> = (props) => {
           ))}
         </Stack>
       </Box>
-    </Stack>
+    </Layout>
   );
 };
 

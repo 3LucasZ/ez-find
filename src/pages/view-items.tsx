@@ -2,6 +2,7 @@ import { Box, Input, Stack } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Header from "components/Header";
 import Item, { ItemProps } from "components/Item";
+import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 
@@ -29,8 +30,7 @@ const Items: React.FC<PageProps> = (props) => {
     });
   };
   return (
-    <Stack>
-      <Header></Header>
+    <Layout>
       <Box pl="25vw" pr="25vw">
         <Input
           variant="filled"
@@ -48,7 +48,7 @@ const Items: React.FC<PageProps> = (props) => {
           ))}
         </Stack>
       </Box>
-    </Stack>
+    </Layout>
   );
 };
 

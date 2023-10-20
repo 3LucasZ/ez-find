@@ -1,6 +1,7 @@
 import { Box, Input, Stack } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Header from "components/Header";
+import Layout from "components/Layout";
 import StorageWidget, { StorageProps } from "components/Storage";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -30,8 +31,7 @@ const Storages: React.FC<PageProps> = (props) => {
   };
 
   return (
-    <Stack>
-      <Header></Header>
+    <Layout>
       <Box pl="25vw" pr="25vw">
         <Input
           variant="filled"
@@ -49,7 +49,7 @@ const Storages: React.FC<PageProps> = (props) => {
           ))}
         </Stack>
       </Box>
-    </Stack>
+    </Layout>
   );
 };
 
