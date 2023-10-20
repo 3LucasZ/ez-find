@@ -1,34 +1,67 @@
 import { DeleteIcon } from "@chakra-ui/icons";
-import { Box, HStack, IconButton } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text, useDisclosure } from "@chakra-ui/react";
+import Router from "next/router";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 export type AdminProps = {
   id: number;
   email: string;
 };
 
-const AdminWidget: React.FC<{ admin: AdminProps }> = ({ admin }) => {
-  let hoverState = {
-    bg: "teal.400",
+const AdminWidget: React.FC<{
+  admin: AdminProps;
+}> = ({ admin }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleDelete = async () => {
+    try {
+      const body = { id: admin.id };
+      console.log(body);
+      const res = await fetch("/api/delete-item", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.status == 500) {
+        alert("Error");
+        Router.replace(Router.asPath);
+        Router.reload();
+      } else {
+        alert("Success");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
-    <HStack>
+    <Flex width="100%">
       <Box
         borderRadius="md"
         bg="teal.300"
         color="white"
         px={4}
         h={8}
-        _hover={hoverState}
+        roundedRight="none"
+        minWidth="90%"
       >
-        {admin.email}
+        <Text width="100%">{admin.email}</Text>
       </Box>
       <IconButton
-        onClick={() => console.log("HAHA")}
+        onClick={onOpen}
         colorScheme="red"
         aria-label="delete"
         icon={<DeleteIcon />}
+        h={8}
+        roundedLeft="none"
+        borderRadius="md"
+        minWidth="10%"
       />
-    </HStack>
+      <ConfirmDeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        name={" the admin: " + admin.email}
+        handleDelete={handleDelete}
+      />
+    </Flex>
   );
 };
 

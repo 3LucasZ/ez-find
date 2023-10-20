@@ -7,8 +7,9 @@ import {
   ListItem,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { EditIcon, Icon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, Icon } from "@chakra-ui/icons";
 import { SlPrinter } from "react-icons/sl";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
@@ -21,6 +22,7 @@ type Props = {
   storage: StorageProps;
 };
 const StoragePage: React.FC<Props> = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
       const body = { id: props.storage.id };
@@ -72,9 +74,17 @@ const StoragePage: React.FC<Props> = (props) => {
               })
             }
           />
+          <IconButton
+            onClick={onOpen}
+            colorScheme="red"
+            aria-label="delete"
+            icon={<DeleteIcon />}
+          />
           <ConfirmDeleteModal
+            onClose={onClose}
             name={" the storage: " + props.storage.name}
             handleDelete={handleDelete}
+            isOpen={isOpen}
           />
           <IconButton
             ml={2}

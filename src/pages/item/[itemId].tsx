@@ -7,8 +7,9 @@ import {
   ListItem,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
 import { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
@@ -22,10 +23,10 @@ type Props = {
 };
 
 const ItemPage: React.FC<Props> = (props) => {
-  const item = props.item;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
-      const body = { id: item.id };
+      const body = { id: props.item.id };
       console.log(body);
       const res = await fetch("/api/delete-item", {
         method: "DELETE",
@@ -39,13 +40,13 @@ const ItemPage: React.FC<Props> = (props) => {
   };
   let storagesUI = <Text>No storages are attached to this item</Text>;
   console.log(props);
-  if (item.storages.length > 0) {
+  if (props.item.storages.length > 0) {
     storagesUI = (
       <Stack>
         <Text>You can find this item at:</Text>
 
         <List spacing={3}>
-          {item.storages.map((storage) => (
+          {props.item.storages.map((storage) => (
             <ListItem key={storage.id}>
               <StorageWidget storage={storage} />
             </ListItem>
@@ -59,7 +60,7 @@ const ItemPage: React.FC<Props> = (props) => {
       <Header />
       <Center>
         <Flex>
-          <Heading>{item.name}</Heading>
+          <Heading>{props.item.name}</Heading>
           <IconButton
             ml={2}
             mr={2}
@@ -67,11 +68,22 @@ const ItemPage: React.FC<Props> = (props) => {
             aria-label="edit"
             icon={<EditIcon />}
             onClick={() =>
-              Router.push({ pathname: "/upsert-item", query: { id: item.id } })
+              Router.push({
+                pathname: "/upsert-item",
+                query: { id: props.item.id },
+              })
             }
           />
+          <IconButton
+            onClick={onOpen}
+            colorScheme="red"
+            aria-label="delete"
+            icon={<DeleteIcon />}
+          />
           <ConfirmDeleteModal
-            name={" the item: " + item.name}
+            isOpen={isOpen}
+            onClose={onClose}
+            name={" the item: " + props.item.name}
             handleDelete={handleDelete}
           />
         </Flex>

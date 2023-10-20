@@ -46,7 +46,8 @@ const Admins: React.FC<PageProps> = (props) => {
       if (res.status == 500) {
         alert("Error: a user with the same email already exists.");
       } else {
-        await Router.push("manage-admin");
+        alert("Success");
+        Router.reload();
       }
     } catch (error) {
       console.error(error);
@@ -63,6 +64,7 @@ const Admins: React.FC<PageProps> = (props) => {
         />
         <Button onClick={submitData}>Create Admin</Button>
       </HStack>
+      <Box h="2" />
       <Box pl="25vw" pr="25vw">
         <Input
           variant="filled"
@@ -73,13 +75,17 @@ const Admins: React.FC<PageProps> = (props) => {
         />
       </Box>
       <Box h="4vh"></Box>
-      <Box overflowY="auto" height="50vh">
-        <Stack ml="33vw" mr="33vw">
-          {state.list.map((admin) => (
-            <Admin admin={admin} key={admin.id} />
-          ))}
-        </Stack>
-      </Box>
+      <HStack>
+        <Box w="100%" />
+        <Box overflowY="auto" height="50vh" w="100%">
+          <Stack w="100%">
+            {state.list.map((admin) => (
+              <Admin admin={admin} key={admin.id} />
+            ))}
+          </Stack>
+        </Box>
+        <Box w="100%" />
+      </HStack>
     </Layout>
   );
 };
