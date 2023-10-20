@@ -1,4 +1,4 @@
-import { Box, HStack, Input, Stack } from "@chakra-ui/react";
+import { Box, Center, HStack, Input, Stack, Text } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 
 type SearchViewProps = {
@@ -48,10 +48,17 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
         />
       </Box>
       <Box h="4vh"></Box>
+
       <HStack h="50vh">
         <Box w="100%" />
         <Box overflowY="auto" h="100%" w="100%">
-          <Stack w="100%">{state.subset.map((pair) => pair.widget)}</Stack>
+          <Stack w="100%">
+            {props.set.length == 0 ? (
+              <Center>No data available to display.</Center>
+            ) : (
+              state.subset.map((pair) => pair.widget)
+            )}
+          </Stack>
         </Box>
         <Box w="100%" />
       </HStack>

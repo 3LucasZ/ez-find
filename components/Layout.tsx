@@ -2,6 +2,9 @@ import Head from "next/head";
 import type { ReactNode } from "react";
 import Header from "./Header";
 
+type LayoutProps = {
+  children: ReactNode;
+};
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>

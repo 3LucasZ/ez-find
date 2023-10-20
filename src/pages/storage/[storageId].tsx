@@ -21,10 +21,14 @@ import ItemWidget from "components/Item";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
 import Layout from "components/Layout";
+import { useSession } from "next-auth/react";
 type Props = {
   storage: StorageProps;
+  admins: string[];
 };
 const StoragePage: React.FC<Props> = (props) => {
+  // session
+  const { data: session } = useSession();
   //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
@@ -47,43 +51,47 @@ const StoragePage: React.FC<Props> = (props) => {
       <Center>
         <Flex>
           <Heading>{props.storage.name}</Heading>
-          <IconButton
-            ml={2}
-            mr={2}
-            colorScheme="teal"
-            aria-label="edit"
-            icon={<EditIcon />}
-            onClick={() =>
-              Router.push({
-                pathname: "/upsert-storage",
-                query: { id: props.storage.id },
-              })
-            }
-          />
-          <IconButton
-            onClick={onOpen}
-            colorScheme="red"
-            aria-label="delete"
-            icon={<DeleteIcon />}
-          />
-          <ConfirmDeleteModal
-            onClose={onClose}
-            name={" the storage: " + props.storage.name}
-            handleDelete={handleDelete}
-            isOpen={isOpen}
-          />
-          <IconButton
-            ml={2}
-            mr={2}
-            colorScheme="teal"
-            aria-label="edit"
-            icon={<Icon as={SlPrinter} />}
-            onClick={() =>
-              Router.push({
-                pathname: "/print/" + props.storage.id,
-              })
-            }
-          />
+          {session && props.admins.includes(session!.user!.email!) && (
+            <>
+              <IconButton
+                ml={2}
+                mr={2}
+                colorScheme="teal"
+                aria-label="edit"
+                icon={<EditIcon />}
+                onClick={() =>
+                  Router.push({
+                    pathname: "/upsert-storage",
+                    query: { id: props.storage.id },
+                  })
+                }
+              />
+              <IconButton
+                onClick={onOpen}
+                colorScheme="red"
+                aria-label="delete"
+                icon={<DeleteIcon />}
+              />
+              <ConfirmDeleteModal
+                onClose={onClose}
+                name={" the storage: " + props.storage.name}
+                handleDelete={handleDelete}
+                isOpen={isOpen}
+              />
+              <IconButton
+                ml={2}
+                mr={2}
+                colorScheme="teal"
+                aria-label="edit"
+                icon={<Icon as={SlPrinter} />}
+                onClick={() =>
+                  Router.push({
+                    pathname: "/print/" + props.storage.id,
+                  })
+                }
+              />
+            </>
+          )}
         </Flex>
       </Center>
       <Box h="1"></Box>
@@ -107,9 +115,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
+  const admins = await prisma.admin.findMany();
   return {
     props: {
       storage: storage,
+      admins: admins.map((admin) => admin.email),
     },
   };
 };

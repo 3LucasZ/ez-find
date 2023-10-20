@@ -10,6 +10,7 @@ import Header from "components/Header";
 import { GetServerSideProps } from "next";
 import { ItemProps } from "components/Item";
 import Layout from "components/Layout";
+import { successToast } from "services/toasty";
 
 enum FormState {
   Input,
@@ -108,7 +109,6 @@ const ItemDraft: React.FC<PageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const prisma = new PrismaClient();
   const allStorages = await prisma.storage.findMany();
-  const allItemNames = await prisma.item.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
   const find = await prisma.item.findUnique({

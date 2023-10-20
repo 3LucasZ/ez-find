@@ -3,6 +3,8 @@ import { SimpleGrid, Stack } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
 import Header from "components/Header";
 import Layout from "components/Layout";
+import { PrismaClient } from "@prisma/client";
+import { GetServerSideProps } from "next";
 
 export default function Home() {
   return (
@@ -36,3 +38,14 @@ export default function Home() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const prisma = new PrismaClient();
+
+  const admins = await prisma.admin.findMany();
+  return {
+    props: {
+      admins: admins,
+    },
+  };
+};

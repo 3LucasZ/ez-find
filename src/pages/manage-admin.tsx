@@ -8,6 +8,7 @@ import {
   HStack,
   Input,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Admin, { AdminProps } from "components/Admin";
@@ -16,6 +17,7 @@ import { useState } from "react";
 import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
+import { successToast } from "services/toasty";
 
 type PageProps = {
   admins: AdminProps[];
@@ -23,6 +25,7 @@ type PageProps = {
 
 const Admins: React.FC<PageProps> = (props) => {
   const [email, setEmail] = useState("");
+  const toaster = useToast();
 
   const handleCreateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -63,13 +66,7 @@ const Admins: React.FC<PageProps> = (props) => {
           widget: <Admin admin={admin} key={admin.id} />,
         }))}
       />
-      <Alert status="error">
-        <AlertIcon />
-        <AlertTitle>Your browser is outdated!</AlertTitle>
-        <AlertDescription>
-          Your Chakra experience may be degraded.
-        </AlertDescription>
-      </Alert>
+      <Button onClick={() => successToast(toaster, "")}>Test</Button>
     </Layout>
   );
 };

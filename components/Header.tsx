@@ -31,9 +31,9 @@ export default function Header() {
             session ? signOut() : signIn("google");
           }}
         >
-          {session ? "Sign out" : "Google sign in"}
+          {session ? "Sign out" : "Sign in"}
         </Button>
-        {session ? (
+        {session && (
           <>
             <Box w="2"></Box>
             <Button
@@ -44,8 +44,6 @@ export default function Header() {
               Admin Dashboard
             </Button>
           </>
-        ) : (
-          ""
         )}
       </Flex>
     </Stack>
