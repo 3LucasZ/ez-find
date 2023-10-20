@@ -25,5 +25,5 @@ model Storage {
 
 model Admin {
   id Int @id @default(autoincrement())
-  email String @unique
+  email String @unique @db.VarChar(255)
 }

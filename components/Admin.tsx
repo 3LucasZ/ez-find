@@ -16,17 +16,16 @@ const AdminWidget: React.FC<{
     try {
       const body = { id: admin.id };
       console.log(body);
-      const res = await fetch("/api/delete-item", {
+      const res = await fetch("/api/delete-admin", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       if (res.status == 500) {
-        alert("Error");
-        Router.replace(Router.asPath);
-        Router.reload();
+        alert("Error, id:" + admin.id);
       } else {
-        alert("Success");
+        //alert("Success");
+        Router.reload();
       }
     } catch (error) {
       console.error(error);

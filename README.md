@@ -25,6 +25,10 @@ Steps in order to have dymo printing functionality:
 - Non-admins can only search/view items/storages
 - Admins can create, update, delete, etc
 
+# Debugging
+
+- npx prisma studio
+
 # Thanks to:
 
 - https://favicon.io/favicon-converter/
