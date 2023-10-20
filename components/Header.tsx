@@ -37,10 +37,10 @@ export default function Header() {
     </Stack>
   );
   return (
-    <Stack>
+    <Stack margin={0}>
       <Box h="1vh"></Box>
-      <Center>
-        <SimpleGrid columns={3} spacing={10}>
+      <Center margin={0}>
+        <SimpleGrid columns={3} spacing={10} margin={0}>
           <Box>{admin}</Box>
           <Box>
             <Link href={"/"} style={{ textDecoration: "none" }}>
