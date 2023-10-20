@@ -3,27 +3,26 @@ import Router from "next/router";
 
 import { MultiValue, Select } from "chakra-react-select";
 
-import { FormControl, Input, Button, Box, Stack } from "@chakra-ui/react";
+import { FormControl, Input, Button, Box } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { StorageProps } from "components/Storage";
-import Header from "components/Header";
 import { GetServerSideProps } from "next";
 import { ItemProps } from "components/Item";
 import Layout from "components/Layout";
-import { successToast } from "services/toasty";
 
 enum FormState {
   Input,
   Submitting,
 }
-type PageProps = {
+type Props = {
   allStorages: StorageProps[];
   oldItem: ItemProps;
+  admins: string[];
 };
 type RelateProps = {
   id: number;
 };
-const ItemDraft: React.FC<PageProps> = (props) => {
+const ItemDraft: React.FC<Props> = (props) => {
   const allOptions = props.allStorages.map((storage) => ({
     value: storage.id,
     label: storage.name,
@@ -66,7 +65,7 @@ const ItemDraft: React.FC<PageProps> = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <Box h="calc(100vh)">
         <div className="add-item-form">
           <form onSubmit={submitData}>
@@ -107,8 +106,10 @@ const ItemDraft: React.FC<PageProps> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  //prisma
   const prisma = new PrismaClient();
   const allStorages = await prisma.storage.findMany();
+  const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
   const find = await prisma.item.findUnique({
@@ -120,10 +121,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
   const oldItem = find == null ? { id: -1, name: "", storages: [] } : find;
+  //ret
   return {
     props: {
       allStorages: allStorages,
       oldItem: oldItem,
+      admins: admins.map((admin) => admin.email),
     },
   };
 };

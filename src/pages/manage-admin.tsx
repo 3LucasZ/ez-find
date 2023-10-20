@@ -1,15 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Button,
-  HStack,
-  Input,
-  Stack,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Input, useToast } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import Admin, { AdminProps } from "components/Admin";
 import { GetServerSideProps } from "next";
@@ -49,7 +38,7 @@ const Admins: React.FC<PageProps> = (props) => {
     }
   };
   return (
-    <Layout>
+    <Layout admins={props.admins.map((admin) => admin.email)}>
       <HStack pl="25vw" pr="25vw">
         <Input
           variant="filled"
@@ -76,7 +65,7 @@ const prisma = new PrismaClient();
 export const getServerSideProps: GetServerSideProps = async () => {
   const admins = await prisma.admin.findMany();
   return {
-    props: { admins },
+    props: { admins: admins },
   };
 };
 

@@ -2,10 +2,13 @@ import Head from "next/head";
 import type { ReactNode } from "react";
 import Header from "./Header";
 
-type LayoutProps = {
+export default function Layout({
+  children,
+  admins,
+}: {
   children: ReactNode;
-};
-export default function Layout({ children }: { children: ReactNode }) {
+  admins: string[];
+}) {
   return (
     <>
       <Head>
@@ -15,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Header />
+        <Header admins={admins} />
         {children}
       </main>
     </>

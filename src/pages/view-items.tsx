@@ -4,13 +4,14 @@ import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
 
-type PageProps = {
+type Props = {
   items: ItemProps[];
+  admins: string[];
 };
 
-const Items: React.FC<PageProps> = (props) => {
+const Items: React.FC<Props> = (props) => {
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <SearchView
         set={props.items.map((item) => ({
           name: item.name,
@@ -25,8 +26,9 @@ const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const items = await prisma.item.findMany();
+  const admins = await prisma.admin.findMany();
   return {
-    props: { items },
+    props: { items: items, admins: admins.map((admin) => admin.email) },
   };
 };
 

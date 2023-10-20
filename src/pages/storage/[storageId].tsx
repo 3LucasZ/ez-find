@@ -47,7 +47,7 @@ const StoragePage: React.FC<Props> = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <Center>
         <Flex>
           <Heading>{props.storage.name}</Heading>

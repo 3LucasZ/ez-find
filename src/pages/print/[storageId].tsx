@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
-import Header from "components/Header";
 import { useQRCode } from "next-qrcode";
 import { fixate, genXML } from "services/genXML";
 import Router from "next/router";
@@ -24,6 +23,7 @@ type Props = {
   xml: string;
   id: number;
   name: string;
+  admins: string[];
 };
 
 type LabelWriterPrinter = {
@@ -117,6 +117,7 @@ const StoragePage: React.FC<Props> = (props) => {
       console.error("An error occured while fetching the data: ", e);
     });
   }, []);
+
   const { Image } = useQRCode();
 
   // console.log("url", props.url);
@@ -124,8 +125,9 @@ const StoragePage: React.FC<Props> = (props) => {
   // console.log("xml", props.xml);
 
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <SimpleGrid columns={2} spacing={10}>
+        {/* Manual Printing */}
         <div>
           <Center>
             <Heading>Manual Printing</Heading>
@@ -154,8 +156,8 @@ const StoragePage: React.FC<Props> = (props) => {
             </Text>
           </Center>
         </div>
+        {/* DYMO Printing */}
         <div>
-          {/* DYMO UI RHS */}
           {img == "" ? (
             <Stack spacing={3}>
               <Center>
@@ -187,8 +189,6 @@ const StoragePage: React.FC<Props> = (props) => {
                     console.log("Print");
                     const Dymo = require("dymojs"),
                       dymo = new Dymo();
-
-                    //dymo.hostname = "host.docker.internal";
                     dymo
                       .print(value?.label, props.xml)
                       .then((response: any, result: any) => {
@@ -253,14 +253,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
-  // .then(() => {
-  //   console.log("PRISMA SUCCESS");
-  // })
-  // .catch((err: any) => {
-  //   console.log("PRISMA BROKEN");
-  // });
+  const admins = await prisma.admin.findMany();
+
   const domain = context.req.headers.host;
-  //const domain = "host.docker.internal";
   const path = "/item/" + storage?.id;
   const url = "http://" + domain + path;
   const xml: string = genXML(url, "" + storage?.name);
@@ -271,6 +266,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       xml: xml,
       id: storage?.id,
       name: storage?.name,
+      admins: admins.map((admin) => admin.email),
     },
   };
 };

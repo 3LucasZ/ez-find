@@ -45,7 +45,7 @@ const ItemPage: React.FC<Props> = (props) => {
   };
   // ret
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <Center>
         <Flex>
           <Heading>{props.item.name}</Heading>

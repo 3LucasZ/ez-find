@@ -1,14 +1,15 @@
-import Head from "next/head";
-import { SimpleGrid, Stack } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import { RouteButton } from "components/RouteButton";
-import Header from "components/Header";
 import Layout from "components/Layout";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
 
-export default function Home() {
+type Props = {
+  admins: string[];
+};
+export default function Home({ admins }: Props) {
   return (
-    <Layout>
+    <Layout admins={admins}>
       <SimpleGrid columns={2} spacing={10}>
         <RouteButton
           route={"upsert-item"}
@@ -41,11 +42,10 @@ export default function Home() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const prisma = new PrismaClient();
-
   const admins = await prisma.admin.findMany();
   return {
     props: {
-      admins: admins,
+      admins: admins.map((admin) => admin.email),
     },
   };
 };

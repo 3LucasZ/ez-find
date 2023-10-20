@@ -13,11 +13,16 @@ import {
 } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Router from "next/router";
+import { useState } from "react";
 
-export default function Header() {
+type HeaderProps = {
+  admins: string[];
+};
+export default function Header({ admins = [] }: HeaderProps) {
   const { data: session } = useSession();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const auth = (
+  const loginUI = (
     <Stack>
       <Text>
         {session
@@ -26,17 +31,22 @@ export default function Header() {
       </Text>
       <Flex>
         <Button
+          isLoading={loading}
+          colorScheme="teal"
+          variant="solid"
           onClick={(e) => {
             e.preventDefault();
+            setLoading(true);
             session ? signOut() : signIn("google");
           }}
         >
           {session ? "Sign out" : "Sign in"}
         </Button>
-        {session && (
+        {session && admins.includes(session!.user!.email!) && (
           <>
             <Box w="2"></Box>
             <Button
+              colorScheme="teal"
               onClick={() => {
                 Router.push("/manage-admin");
               }}
@@ -63,7 +73,7 @@ export default function Header() {
             </Link>
           </Center>
         </Box>
-        <Box>{auth}</Box>
+        <Box>{loginUI}</Box>
       </SimpleGrid>
       <Box h="5"></Box>
     </div>

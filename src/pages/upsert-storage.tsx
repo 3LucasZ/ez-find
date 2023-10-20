@@ -15,14 +15,15 @@ enum FormState {
   Input,
   Submitting,
 }
-type PageProps = {
+type Props = {
   allItems: ItemProps[];
   oldStorage: StorageProps;
+  admins: string[];
 };
 type RelateProps = {
   id: number;
 };
-const StorageDraft: React.FC<PageProps> = (props) => {
+const StorageDraft: React.FC<Props> = (props) => {
   const allOptions = props.allItems.map((item) => ({
     value: item.id,
     label: item.name,
@@ -67,7 +68,7 @@ const StorageDraft: React.FC<PageProps> = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout admins={props.admins}>
       <Box h="calc(100vh)">
         <div className="add-item-form">
           <form onSubmit={submitData}>
@@ -108,8 +109,10 @@ const StorageDraft: React.FC<PageProps> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  //prisma
   const prisma = new PrismaClient();
   const allItems = await prisma.item.findMany();
+  const admins = await prisma.admin.findMany();
   const { id } = context.query;
   const realId = id == undefined ? -1 : Number(id);
   const find = await prisma.storage.findUnique({
@@ -121,10 +124,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
   const oldStorage = find == null ? { id: -1, name: "", items: [] } : find;
+  //ret
   return {
     props: {
       allItems: allItems,
       oldStorage: oldStorage,
+      admins: admins.map((admin) => admin.email),
     },
   };
 };
