@@ -17,6 +17,7 @@ import { fixate, genXML } from "services/genXML";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
+import Layout from "components/Layout";
 
 type Props = {
   url: string;
@@ -123,8 +124,7 @@ const StoragePage: React.FC<Props> = (props) => {
   // console.log("xml", props.xml);
 
   return (
-    <Stack>
-      <Header />
+    <Layout>
       <SimpleGrid columns={2} spacing={10}>
         <div>
           <Center>
@@ -239,7 +239,7 @@ const StoragePage: React.FC<Props> = (props) => {
           )}
         </div>
       </SimpleGrid>
-    </Stack>
+    </Layout>
   );
 };
 

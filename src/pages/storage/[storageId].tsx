@@ -1,4 +1,5 @@
 import {
+  Box,
   Center,
   Flex,
   Heading,
@@ -18,10 +19,13 @@ import { StorageProps } from "components/Storage";
 import Router from "next/router";
 import ItemWidget from "components/Item";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
+import SearchView from "components/SearchView";
+import Layout from "components/Layout";
 type Props = {
   storage: StorageProps;
 };
 const StoragePage: React.FC<Props> = (props) => {
+  //modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
@@ -37,27 +41,9 @@ const StoragePage: React.FC<Props> = (props) => {
       console.error(error);
     }
   };
-  let itemsUI = <Text>No items are attached to this storage.</Text>;
-  if (props.storage.items.length > 0) {
-    itemsUI = (
-      <Stack>
-        <Text>Location contains the items:</Text>
-        <List spacing={3}>
-          {props.storage.items.map((item) => (
-            <ListItem key={item.id}>
-              <ItemWidget item={item} />
-            </ListItem>
-          ))}
-        </List>
-      </Stack>
-    );
-  }
-
-  console.log("storage", props.storage);
 
   return (
-    <Stack>
-      <Header />
+    <Layout>
       <Center>
         <Flex>
           <Heading>{props.storage.name}</Heading>
@@ -100,8 +86,14 @@ const StoragePage: React.FC<Props> = (props) => {
           />
         </Flex>
       </Center>
-      <Center>{itemsUI}</Center>
-    </Stack>
+      <Box h="1"></Box>
+      <SearchView
+        set={props.storage.items.map((item) => ({
+          name: item.name,
+          widget: <ItemWidget item={item} key={item.id} />,
+        }))}
+      />
+    </Layout>
   );
 };
 
@@ -115,7 +107,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       items: true,
     },
   });
-
   return {
     props: {
       storage: storage,

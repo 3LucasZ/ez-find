@@ -11,14 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Router from "next/router";
 
 export default function Header() {
   const { data: session } = useSession();
-  const admin = session ? (
-    <Link href={"manage-admin"}>Admin Dashboard</Link>
-  ) : (
-    ""
-  );
+
   const auth = (
     <Stack>
       <Text>
@@ -34,14 +31,25 @@ export default function Header() {
       >
         {session ? "Sign out" : "Google sign in"}
       </Button>
+      {session ? (
+        <Button
+          onClick={() => {
+            Router.push("/manage-admin");
+          }}
+        >
+          Admin Dashboard
+        </Button>
+      ) : (
+        ""
+      )}
     </Stack>
   );
   return (
-    <Stack margin={0}>
-      <Box h="1vh"></Box>
-      <Center margin={0}>
-        <SimpleGrid columns={3} spacing={10} margin={0}>
-          <Box>{admin}</Box>
+    <Stack>
+      <Box h="1"></Box>
+      <Center>
+        <SimpleGrid columns={3} spacing={10}>
+          <Box></Box>
           <Box>
             <Link href={"/"} style={{ textDecoration: "none" }}>
               <Heading as="h1" size="4xl" color="teal.500">
@@ -52,9 +60,8 @@ export default function Header() {
           <Box>{auth}</Box>
         </SimpleGrid>
       </Center>
-      <Box h="1vh"></Box>
       <Divider />
-      <Box h="5vh"></Box>
+      <Box h="1"></Box>
     </Stack>
   );
 }

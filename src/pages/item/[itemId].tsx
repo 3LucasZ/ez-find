@@ -1,28 +1,27 @@
 import {
+  Box,
   Center,
   Flex,
   Heading,
   IconButton,
-  List,
-  ListItem,
-  Stack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { PrismaClient } from "@prisma/client";
 import { ItemProps } from "components/Item";
 import { GetServerSideProps } from "next";
-import Header from "components/Header";
 import StorageWidget from "components/Storage";
 import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import Router from "next/router";
+import Layout from "components/Layout";
+import SearchView from "components/SearchView";
 
 type Props = {
   item: ItemProps;
 };
 
 const ItemPage: React.FC<Props> = (props) => {
+  // delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = async () => {
     try {
@@ -38,26 +37,9 @@ const ItemPage: React.FC<Props> = (props) => {
       console.error(error);
     }
   };
-  let storagesUI = <Text>No storages are attached to this item</Text>;
-  console.log(props);
-  if (props.item.storages.length > 0) {
-    storagesUI = (
-      <Stack>
-        <Text>You can find this item at:</Text>
 
-        <List spacing={3}>
-          {props.item.storages.map((storage) => (
-            <ListItem key={storage.id}>
-              <StorageWidget storage={storage} />
-            </ListItem>
-          ))}
-        </List>
-      </Stack>
-    );
-  }
   return (
-    <Stack>
-      <Header />
+    <Layout>
       <Center>
         <Flex>
           <Heading>{props.item.name}</Heading>
@@ -88,8 +70,14 @@ const ItemPage: React.FC<Props> = (props) => {
           />
         </Flex>
       </Center>
-      <Center>{storagesUI}</Center>
-    </Stack>
+      <Box h={1}></Box>
+      <SearchView
+        set={props.item.storages.map((storage) => ({
+          name: storage.name,
+          widget: <StorageWidget storage={storage} key={storage.id} />,
+        }))}
+      />
+    </Layout>
   );
 };
 
