@@ -48,9 +48,9 @@ export default function ConfirmDeleteModal(props: SearchViewProps) {
         />
       </Box>
       <Box h="4vh"></Box>
-      <HStack maxH="100%">
+      <HStack h="50vh">
         <Box w="100%" />
-        <Box overflowY="auto" maxH="100%" w="100%">
+        <Box overflowY="auto" h="100%" w="100%">
           <Stack w="100%">{state.subset.map((pair) => pair.widget)}</Stack>
         </Box>
         <Box w="100%" />

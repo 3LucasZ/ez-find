@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Divider,
+  Flex,
   Heading,
   HStack,
   Link,
@@ -23,45 +24,50 @@ export default function Header() {
           ? "Signed in as " + session.user!.email
           : "You are not signed in"}
       </Text>
-      <Button
-        onClick={(e) => {
-          e.preventDefault();
-          session ? signOut() : signIn("google");
-        }}
-      >
-        {session ? "Sign out" : "Google sign in"}
-      </Button>
-      {session ? (
+      <Flex>
         <Button
-          onClick={() => {
-            Router.push("/manage-admin");
+          onClick={(e) => {
+            e.preventDefault();
+            session ? signOut() : signIn("google");
           }}
         >
-          Admin Dashboard
+          {session ? "Sign out" : "Google sign in"}
         </Button>
-      ) : (
-        ""
-      )}
+        {session ? (
+          <>
+            <Box w="2"></Box>
+            <Button
+              onClick={() => {
+                Router.push("/manage-admin");
+              }}
+            >
+              Admin Dashboard
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
+      </Flex>
     </Stack>
   );
   return (
-    <Stack>
+    <div>
       <Box h="1"></Box>
-      <Center>
-        <SimpleGrid columns={3} spacing={10}>
-          <Box></Box>
-          <Box>
+
+      <SimpleGrid columns={3} spacing={10}>
+        <Box></Box>
+        <Box>
+          <Center>
             <Link href={"/"} style={{ textDecoration: "none" }}>
               <Heading as="h1" size="4xl" color="teal.500">
                 EZ-Find
               </Heading>
             </Link>
-          </Box>
-          <Box>{auth}</Box>
-        </SimpleGrid>
-      </Center>
-      <Divider />
-      <Box h="1"></Box>
-    </Stack>
+          </Center>
+        </Box>
+        <Box>{auth}</Box>
+      </SimpleGrid>
+      <Box h="5"></Box>
+    </div>
   );
 }
