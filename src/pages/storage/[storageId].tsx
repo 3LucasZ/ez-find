@@ -94,7 +94,7 @@ const StoragePage: React.FC<Props> = (props) => {
           )}
         </Flex>
       </Center>
-      <Box h="1"></Box>
+      <Box h="4vh"></Box>
       <SearchView
         set={props.storage.items.map((item) => ({
           name: item.name,
