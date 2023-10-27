@@ -12,6 +12,9 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
   app:
+    user: root
+    depends_on:
+      - db
     image: daftdove/ezfind:latest
     platform: "linux/arm64"
     build:
