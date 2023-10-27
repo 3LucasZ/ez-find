@@ -18,11 +18,13 @@ Steps in order to have dymo printing functionality:
 
 # Future plans
 
-- Make the labels multi-line when it gets too long
-- Display the printer meta data xml properly
-- Selection for different types of DYMO printers
-- Non-admins can only search/view items/storages
-- Admins can create, update, delete, etc
+- None
+
+# Deploy
+
+- docker compose --env-file .env build #builder computer
+- docker compose --env-file .env pull #runner computer
+- docker compose --env-file .env up #runner computer
 
 # Debugging
 
