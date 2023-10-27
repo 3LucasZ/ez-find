@@ -8,9 +8,8 @@ Steps in order to have dymo printing functionality:
 
 - Dymo Connect Service is running on your computer
 - Service port is at 41951 (default)
-- Connected to ONE printer via USB
-
-4. (Note) There is currently only support for DYMO LabelWriter 450 Printers
+- Connected to a printer via USB
+- Dymo Certificate is trusted
 
 # Useful Commands
 
@@ -32,3 +31,11 @@ Steps in order to have dymo printing functionality:
 # Thanks to:
 
 - https://favicon.io/favicon-converter/
+
+# Privacy policy:
+
+- We do not make money. We do not collect any data from our users.
+
+# Terms of service:
+
+- Please do not hack our website.
