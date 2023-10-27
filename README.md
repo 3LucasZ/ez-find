@@ -34,8 +34,8 @@ Steps in order to have dymo printing functionality:
 
 # Privacy policy:
 
-- We do not make money. We do not collect any data from our users.
+- We do not make any money. We do not collect any data from our users. We use Google sign in only to see if your email is part of the administration team.
 
 # Terms of service:
 
-- Please do not hack our website.
+- We run on a private network, only a small core team can access. Please do not hack our website.
