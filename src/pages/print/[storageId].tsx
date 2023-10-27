@@ -48,6 +48,7 @@ const StoragePage: React.FC<Props> = (props) => {
     const fetchData = async () => {
       const Dymo = require("dymojs"),
         dymo = new Dymo();
+      //dymo.
       await dymo //get sticker preview as h265 string
         .renderLabel(props.xml)
         .then((imageData: string) => {
