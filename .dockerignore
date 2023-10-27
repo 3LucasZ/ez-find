@@ -9,6 +9,8 @@ Dockerfile
 # env
 .env
 .env.local
+certificates
+*.pem
 
 # node
 node_modules

@@ -38,3 +38,4 @@ next-env.d.ts
 #EXTREMELY SENSITIVE DATA
 .env
 .env.local
+certificates
