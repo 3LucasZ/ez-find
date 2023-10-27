@@ -23,10 +23,13 @@ Steps in order to have dymo printing functionality:
 # Deploy
 
 - docker compose --env-file .env build
+- Push to hub w/ Desktop
+- Copy paste docker-compose.yml and .env
 - docker compose --env-file .env pull
 - docker compose --env-file .env up
+- #in case you need to go back in?
 - docker start ezfind-compose-app-1 ezfind-compose-db-1
-- docker exec -it ezfind-compose-app-1 bash
+- docker exec -it ezfind-compose-app-1 /bin/sh
 
 # Debugging
 
