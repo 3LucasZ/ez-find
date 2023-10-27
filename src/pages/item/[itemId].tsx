@@ -18,6 +18,7 @@ import SearchView from "components/SearchView";
 import Protect from "components/Protect";
 import { AdminProps } from "components/Admin";
 import { useSession } from "next-auth/react";
+import prisma from "services/prisma";
 
 type Props = {
   item: ItemProps;
@@ -93,7 +94,6 @@ const ItemPage: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
   const item = await prisma.item.findUnique({
     where: {
       id: Number(context.params?.itemId),

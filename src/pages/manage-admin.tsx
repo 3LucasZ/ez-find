@@ -7,6 +7,7 @@ import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { successToast } from "services/toasty";
+import prisma from "services/prisma";
 
 type PageProps = {
   admins: AdminProps[];
@@ -59,8 +60,6 @@ const Admins: React.FC<PageProps> = (props) => {
     </Layout>
   );
 };
-
-const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const admins = await prisma.admin.findMany();

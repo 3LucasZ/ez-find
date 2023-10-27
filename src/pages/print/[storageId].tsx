@@ -17,6 +17,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
 import Layout from "components/Layout";
+import prisma from "services/prisma";
 
 type Props = {
   url: string;
@@ -245,7 +246,6 @@ const StoragePage: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
   const storage = await prisma.storage.findUnique({
     where: {
       id: Number(context.params?.storageId),

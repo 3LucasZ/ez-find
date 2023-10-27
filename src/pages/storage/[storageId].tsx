@@ -22,6 +22,7 @@ import ConfirmDeleteModal from "components/ConfirmDeleteModal";
 import SearchView from "components/SearchView";
 import Layout from "components/Layout";
 import { useSession } from "next-auth/react";
+import prisma from "services/prisma";
 type Props = {
   storage: StorageProps;
   admins: string[];
@@ -106,7 +107,6 @@ const StoragePage: React.FC<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
   const storage = await prisma.storage.findUnique({
     where: {
       id: Number(context.params?.storageId),

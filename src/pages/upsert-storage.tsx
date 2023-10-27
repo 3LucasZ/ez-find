@@ -10,6 +10,7 @@ import Header from "components/Header";
 import { GetServerSideProps } from "next";
 import { ItemProps } from "components/Item";
 import Layout from "components/Layout";
+import prisma from "services/prisma";
 
 enum FormState {
   Input,
@@ -110,7 +111,6 @@ const StorageDraft: React.FC<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //prisma
-  const prisma = new PrismaClient();
   const allItems = await prisma.item.findMany();
   const admins = await prisma.admin.findMany();
   const { id } = context.query;

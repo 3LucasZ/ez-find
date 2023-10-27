@@ -4,6 +4,7 @@ import Layout from "components/Layout";
 import { PrismaClient } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
+import prisma from "services/prisma";
 
 type Props = {
   admins: string[];
@@ -47,7 +48,6 @@ export default function Home({ admins }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
   const admins = await prisma.admin.findMany();
   return {
     props: {

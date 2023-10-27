@@ -3,6 +3,7 @@ import ItemWidget, { ItemProps } from "components/Item";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
 import { GetServerSideProps } from "next";
+import prisma from "services/prisma";
 
 type Props = {
   items: ItemProps[];
@@ -21,8 +22,6 @@ const Items: React.FC<Props> = (props) => {
     </Layout>
   );
 };
-
-const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const items = await prisma.item.findMany();

@@ -3,6 +3,7 @@ import StorageWidget, { StorageProps } from "components/Storage";
 import Layout from "components/Layout";
 import { GetServerSideProps } from "next";
 import SearchView from "components/SearchView";
+import prisma from "services/prisma";
 
 type Props = {
   storages: StorageProps[];
@@ -21,8 +22,6 @@ const Storages: React.FC<Props> = (props) => {
     </Layout>
   );
 };
-
-const prisma = new PrismaClient();
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const storages = await prisma.storage.findMany();
