@@ -22,9 +22,9 @@ Steps in order to have dymo printing functionality:
 
 # Deploy
 
-- docker compose --env-file .env build #builder computer
-- docker compose --env-file .env pull #runner computer
-- docker compose --env-file .env up #runner computer
+- docker compose --env-file .env build
+- docker compose --env-file .env pull
+- docker compose --env-file .env up
 
 # Debugging
 

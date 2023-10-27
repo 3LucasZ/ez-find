@@ -12,8 +12,8 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
   app:
-    user: root
-    depends_on:
+    user: root # generate certificates without password during start.sh
+    depends_on: # wait for postgres to be installed before running prisma migrate
       - db
     image: daftdove/ezfind:latest
     platform: "linux/arm64"
