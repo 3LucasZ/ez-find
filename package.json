@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --experimental-https",
-    "dev2": "next dev --hostname 10.59.0.10 --experimental-https",
+    "dev2": "next dev --hostname host.docker.internal --experimental-https",
     "dev3": "next dev --hostname 192.168.1.208 --experimental-https",
     "build": "next build",
     "start": "next start",
