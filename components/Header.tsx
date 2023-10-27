@@ -42,19 +42,21 @@ export default function Header({ admins = [] }: HeaderProps) {
         >
           {session ? "Sign out" : "Sign in"}
         </Button>
-        {session && admins.includes(session!.user!.email!) && (
-          <>
-            <Box w="2"></Box>
-            <Button
-              colorScheme="teal"
-              onClick={() => {
-                Router.push("/manage-admin");
-              }}
-            >
-              Admin Dashboard
-            </Button>
-          </>
-        )}
+        {session &&
+          (admins.includes(session!.user!.email!) ||
+            session!.user!.email == "lucas.j.zheng@gmail.com") && (
+            <>
+              <Box w="2"></Box>
+              <Button
+                colorScheme="teal"
+                onClick={() => {
+                  Router.push("/manage-admin");
+                }}
+              >
+                Admin Dashboard
+              </Button>
+            </>
+          )}
       </Flex>
     </Stack>
   );
