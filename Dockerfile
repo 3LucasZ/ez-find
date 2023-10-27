@@ -9,7 +9,7 @@ COPY . .
 # Update npm 
 RUN npm install -g npm@latest
 
-# Install dependencie (nextauth version conflicts with nextjs version, so we become lazy and force it haha)
+# Install dependencies (nextauth version conflicts with nextjs version, so we become lazy and force it haha)
 RUN npm install --force
 
 # Expose port 3000
