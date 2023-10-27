@@ -55,7 +55,7 @@ const Admins: React.FC<PageProps> = (props) => {
           widget: <Admin admin={admin} key={admin.id} />,
         }))}
       />
-      <Button onClick={() => successToast(toaster, "")}>Test</Button>
+      {/* <Button onClick={() => successToast(toaster, "")}>Test</Button> */}
     </Layout>
   );
 };
