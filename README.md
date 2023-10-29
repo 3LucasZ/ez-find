@@ -34,6 +34,7 @@ Steps in order to have dymo printing functionality:
 # Debugging
 
 - npx prisma studio
+- netstat -anlp | grep 3000
 
 # Thanks to:
 
