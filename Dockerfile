@@ -7,7 +7,7 @@ FROM --platform=linux/arm64 node:16-alpine3.17 AS deps
 RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
 
-# Install Prisma Client - remove if not using Prisma
+#EDIT: Copy over full prisma folder (migrations, schema)
 COPY prisma ./prisma
 
 # Install dependencies based on the preferred package manager
@@ -18,10 +18,11 @@ RUN npm ci
 ##### BUILDER
 #EDIT: Use arm64 not amd64
 FROM --platform=linux/arm64 node:16-alpine3.17 AS builder
+#EDIT: delete arg for database_url since it's unused
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-#EDIT: Copy over full prisma folder
+#EDIT: Copy over full prisma folder (migrations, schema)
 COPY --from=deps /app/prisma ./prisma
 COPY . .
 
@@ -47,12 +48,12 @@ COPY --from=builder /app/package.json ./package.json
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-#EDIT: Copy over full prisma folder
+#EDIT: Copy over full prisma folder (migrations, schema)
 COPY --from=builder /app/prisma ./prisma
 
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 
-#EDIT: Map schema.prisma to the postgres schema
+#EDIT: Map schema.prisma to the postgres schema, then run server.
 CMD npx prisma migrate deploy && node server.js
