@@ -18,10 +18,10 @@ RUN npm ci
 ##### BUILDER
 #EDIT: Use arm64 not amd64
 FROM --platform=linux/arm64 node:16-alpine3.17 AS builder
-ARG DATABASE_URL
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+#EDIT: Copy over full prisma folder
 COPY --from=deps /app/prisma ./prisma
 COPY . .
 
@@ -47,10 +47,12 @@ COPY --from=builder /app/package.json ./package.json
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+#EDIT: Copy over full prisma folder
 COPY --from=builder /app/prisma ./prisma
 
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 
+#EDIT: Map schema.prisma to the postgres schema
 CMD npx prisma migrate deploy && node server.js
