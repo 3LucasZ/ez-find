@@ -6,7 +6,7 @@ import { useState } from "react";
 import Router from "next/router";
 import Layout from "components/Layout";
 import SearchView from "components/SearchView";
-import { successToast } from "services/toasty";
+import { errorToast, successToast } from "services/toasty";
 import prisma from "services/prisma";
 
 type PageProps = {
@@ -30,7 +30,7 @@ const Admins: React.FC<PageProps> = (props) => {
         body: JSON.stringify(body),
       });
       if (res.status == 500) {
-        alert("Error: a user with the same email already exists.");
+        errorToast(toaster, "Admin " + email + " already exists.");
       } else {
         Router.reload();
       }
@@ -56,7 +56,6 @@ const Admins: React.FC<PageProps> = (props) => {
           widget: <Admin admin={admin} key={admin.id} />,
         }))}
       />
-      {/* <Button onClick={() => successToast(toaster, "")}>Test</Button> */}
     </Layout>
   );
 };

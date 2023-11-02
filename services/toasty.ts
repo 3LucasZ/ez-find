@@ -1,5 +1,3 @@
-import { useToast } from "@chakra-ui/toast";
-
 export function successToast(toaster: any, desc: string) {
   return toaster({
     title: "Success",
@@ -15,7 +13,7 @@ export function errorToast(toaster: any, desc: string) {
     title: "Error",
     description: desc,
     status: "error",
-    duration: 2000,
+    duration: 5000,
     isClosable: true,
   });
 }

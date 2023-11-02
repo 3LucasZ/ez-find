@@ -3,7 +3,14 @@ import Router from "next/router";
 
 import { MultiValue, Select } from "chakra-react-select";
 
-import { FormControl, Input, Button, Box, Stack } from "@chakra-ui/react";
+import {
+  FormControl,
+  Input,
+  Button,
+  Box,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
 import { PrismaClient } from "@prisma/client";
 import { StorageProps } from "components/Storage";
 import Header from "components/Header";
@@ -11,6 +18,7 @@ import { GetServerSideProps } from "next";
 import { ItemProps } from "components/Item";
 import Layout from "components/Layout";
 import prisma from "services/prisma";
+import { errorToast } from "services/toasty";
 
 enum FormState {
   Input,
@@ -25,6 +33,7 @@ type RelateProps = {
   id: number;
 };
 const StorageDraft: React.FC<Props> = (props) => {
+  const toaster = useToast();
   const allOptions = props.allItems.map((item) => ({
     value: item.id,
     label: item.name,
@@ -57,7 +66,7 @@ const StorageDraft: React.FC<Props> = (props) => {
       });
       if (res.status == 500) {
         setFormState(FormState.Input);
-        alert("Error: a storage with the same name already exists.");
+        errorToast(toaster, "Storage " + name + " already exists.");
       } else {
         setFormState(FormState.Input);
         await Router.push(isNew ? "view-storages" : "storage/" + id);
