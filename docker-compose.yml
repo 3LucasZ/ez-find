@@ -1,8 +1,20 @@
 version: "3.9"
 services:
+  nginx:
+    image: daftdove/nginx:latest
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
   db:
+    platform: "linux/arm64"
     image: postgres
     restart: always
+    container_name: "postgres"
     ports:
       - "5555:5432"
     environment:
@@ -11,17 +23,18 @@ services:
       - POSTGRES_DB=${CMP_PG_DB}
     volumes:
       - db:/var/lib/postgresql/data
-  app:
-    user: root # generate certificates without password during start.sh
+  nextjs:
+    platform: "linux/arm64"
+    image: daftdove/ezfind:latest
+    container_name: nextjs
     depends_on: # wait for postgres to be installed before running prisma migrate
       - db
-    image: daftdove/ezfind:latest
-    platform: "linux/arm64"
     build:
       context: .
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    user: root # generate certificates without password during start.sh
     extra_hosts:
       - "host.docker.internal:host-gateway"
     working_dir: /app

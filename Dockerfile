@@ -15,7 +15,7 @@ RUN openssl req -x509 -newkey rsa:4096 -keyout certificates/key.pem -out certifi
 #EDIT: Copy over full prisma folder (migrations, schema)
 COPY prisma ./prisma
 #EDIT: Copy over dank
-COPY dank-server.js ./
+# COPY dank-server.js ./
 
 # Copy dependencies
 COPY package.json package-lock.json ./
@@ -35,7 +35,7 @@ COPY --from=deps /app/prisma ./prisma
 #EDIT: Copy over cert
 COPY --from=deps /app/certificates ./certificates
 #EDIT: Copy over dank
-COPY --from=deps /app/dank-server.js ./
+# COPY --from=deps /app/dank-server.js ./
 #I actual don't know why this was included in original image lmfao
 COPY . .
 
@@ -66,7 +66,7 @@ COPY --from=builder /app/prisma ./prisma
 #EDIT: Copy over cert
 COPY --from=builder /app/certificates ./certificates
 #EDIT: Copy over dank
-COPY --from=builder /app/dank-server.js ./
+# COPY --from=builder /app/dank-server.js ./
 
 USER nextjs
 EXPOSE 3000
