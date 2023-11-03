@@ -2,7 +2,7 @@ version: "3.9"
 services:
   nginx:
     platform: "linux/arm64"
-    image: daftdove/nginx:latest
+    image: daftdove/ezfind-nginx:latest
     container_name: ezfind-nginx
     build:
       context: ./nginx
@@ -26,7 +26,7 @@ services:
     restart: always
   app:
     platform: "linux/arm64"
-    image: daftdove/ezfind:latest
+    image: daftdove/ezfind-app:latest
     container_name: ezfind-app
     depends_on: # wait for postgres to be installed before running prisma migrate
       - db
