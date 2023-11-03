@@ -1,5 +1,5 @@
 const path = require("path");
-const fs = require("fs");
+
 const dir = path.join(__dirname);
 
 process.env.NODE_ENV = "production";
@@ -207,11 +207,6 @@ if (
   keepAliveTimeout = undefined;
 }
 
-const httpsOptions = {
-  key: fs.readFileSync("certificates/key.pem"),
-  cert: fs.readFileSync("certificates/cert.pem"),
-};
-
 startServer({
   dir,
   isDev: false,
@@ -221,7 +216,6 @@ startServer({
   allowRetry: false,
   keepAliveTimeout,
   useWorkers: true,
-  selfSignedCertificate: true,
 }).catch((err) => {
   console.error(err);
   process.exit(1);
