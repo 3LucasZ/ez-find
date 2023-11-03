@@ -3,7 +3,7 @@
 ##### DEPENDENCIES
 
 #EDIT: Use arm64 not amd64
-FROM --platform=linux/arm64 node:16-alpine3.17 AS deps
+FROM --platform=linux/arm64 node:20.9.0-alpine3.17 AS deps
 #EDIT: openssl
 RUN apk add --no-cache libc6-compat openssl1.1-compat openssl
 
@@ -17,14 +17,15 @@ COPY prisma ./prisma
 #EDIT: Copy over dank
 COPY dank-server.js ./
 
-# Install dependencies
+# Copy dependencies
 COPY package.json package-lock.json ./
 
+# Clean-install dependencies (avoids cache)
 RUN npm ci
 
 ##### BUILDER
-#EDIT: Use arm64 not amd64
-FROM --platform=linux/arm64 node:16-alpine3.17 AS builder
+#EDIT: Use 20.9.0 arm64 not 17 amd64
+FROM --platform=linux/arm64 node:20.9.0-alpine3.17 AS builder
 #EDIT: delete arg for database_url since it's unused
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
@@ -35,7 +36,7 @@ COPY --from=deps /app/prisma ./prisma
 COPY --from=deps /app/certificates ./certificates
 #EDIT: Copy over dank
 COPY --from=deps /app/dank-server.js ./
-#I actual don't know why this was included i original image lmfao
+#I actual don't know why this was included in original image lmfao
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -44,7 +45,7 @@ RUN SKIP_ENV_VALIDATION=1 npm run build
 
 ##### RUNNER
 #EDIT: Use arm64 not amd64
-FROM --platform=linux/arm64 node:16-alpine3.17 AS runner
+FROM --platform=linux/arm64 node:20.9.0-alpine3.17 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -72,6 +73,8 @@ EXPOSE 3000
 ENV PORT 3000
 
 #EDIT: Map schema.prisma to the postgres schema, then run server.
+# node server.js (regular, http)
+# node dank-server.js (advanced, https, WIP)
 CMD npx prisma migrate deploy \
-&& NODE_ENV=production node dank-server.js
-# server.js for regular without https
+&& node server.js
+# && NODE_ENV=production node dank-server.js
