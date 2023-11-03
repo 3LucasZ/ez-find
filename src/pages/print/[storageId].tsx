@@ -141,7 +141,6 @@ const StoragePage: React.FC<Props> = (props) => {
               options={{
                 type: "image/jpeg",
                 quality: 0.3,
-                level: "M",
                 margin: 3,
                 scale: 4,
                 width: 200,
