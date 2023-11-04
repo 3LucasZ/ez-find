@@ -256,7 +256,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const admins = await prisma.admin.findMany();
 
   const domain = context.req.headers.host;
-  const path = "/item/" + storage?.id;
+  const path = "/storage/" + storage?.id;
   const url = "http://" + domain + path;
   const xml: string = genXML(url, "" + storage?.name);
 
